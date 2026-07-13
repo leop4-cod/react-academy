@@ -1,20 +1,45 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BookOpen, Loader2, ArrowLeft } from "lucide-react";
+import { axiosClient } from "../../../infrastructure/http/axios-client";
 
 export default function Register() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
     
-    // Simular llamada a API
-    setTimeout(() => {
-      setIsLoading(false);
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      const nameParts = name.split(" ");
+      const first_name = nameParts[0];
+      const last_name = nameParts.slice(1).join(" ");
+      
+      await axiosClient.post("/auth/register/", {
+        email,
+        password,
+        first_name,
+        last_name,
+      });
       navigate("/login");
-    }, 1500);
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.email?.[0] || err.response?.data?.detail || "Ocurrió un error al registrarse.";
+      setError(errorMsg);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -46,6 +71,11 @@ export default function Register() {
           </div>
 
           <div className="mt-8">
+            {error && (
+              <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-md">
+                <p className="text-sm text-red-700">{error}</p>
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-slate-700">
@@ -59,6 +89,8 @@ export default function Register() {
                     required
                     className="appearance-none block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
                     placeholder="Ej. Juan Pérez"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
               </div>
@@ -76,6 +108,8 @@ export default function Register() {
                     required
                     className="appearance-none block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
                     placeholder="estudiante@correo.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -93,6 +127,8 @@ export default function Register() {
                     required
                     className="appearance-none block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
                     placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>
@@ -110,6 +146,8 @@ export default function Register() {
                     required
                     className="appearance-none block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
                     placeholder="••••••••"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </div>
               </div>

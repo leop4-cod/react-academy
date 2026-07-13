@@ -1,21 +1,36 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BookOpen, Loader2, ArrowLeft } from "lucide-react";
+import { axiosClient } from "../../../infrastructure/http/axios-client";
+import { useAuthStore } from "../../store/auth.store";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError("");
     
-    // Simular llamada a API
-    setTimeout(() => {
-      setIsLoading(false);
-      // Redirigir a un dashboard ficticio o home
+    try {
+      const response = await axiosClient.post("/auth/login/", {
+        email,
+        password,
+      });
+      // El backend de SimpleJWT suele devolver { access, refresh }
+      const token = response.data.access;
+      setAuth(token);
       navigate("/");
-    }, 1500);
+    } catch (err: any) {
+      setError(err.response?.data?.detail || "Credenciales inválidas. Inténtalo de nuevo.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -47,6 +62,11 @@ export default function Login() {
           </div>
 
           <div className="mt-8">
+            {error && (
+              <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-md">
+                <p className="text-sm text-red-700">{error}</p>
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-slate-700">
@@ -61,6 +81,8 @@ export default function Login() {
                     required
                     className="appearance-none block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
                     placeholder="estudiante@correo.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -78,6 +100,8 @@ export default function Login() {
                     required
                     className="appearance-none block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
                     placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>

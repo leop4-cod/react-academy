@@ -1,20 +1,27 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { BookOpen, Loader2, ArrowLeft, MailCheck } from "lucide-react";
+import { axiosClient } from "../../../infrastructure/http/axios-client";
 
 export default function RecoverPassword() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError("");
     
-    // Simular llamada a API
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await axiosClient.post("/auth/password-reset/", { email });
       setIsSent(true);
-    }, 1500);
+    } catch (err: any) {
+      setError(err.response?.data?.email?.[0] || "Ocurrió un error al enviar la solicitud.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -43,7 +50,13 @@ export default function RecoverPassword() {
           </div>
 
           {!isSent ? (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="w-full">
+              {error && (
+                <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-md">
+                  <p className="text-sm text-red-700">{error}</p>
+                </div>
+              )}
+              <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-slate-700">
                   Correo electrónico registrado
@@ -57,6 +70,8 @@ export default function RecoverPassword() {
                     required
                     className="appearance-none block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
                     placeholder="estudiante@correo.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -75,6 +90,7 @@ export default function RecoverPassword() {
                 </button>
               </div>
             </form>
+            </div>
           ) : (
             <div className="text-center fade-in bg-green-50 p-6 rounded-xl border border-green-100">
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">

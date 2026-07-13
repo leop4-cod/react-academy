@@ -1,30 +1,26 @@
-import { BookOpen, Code2, Terminal, Cpu } from "lucide-react";
+import { BookOpen, Code2, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getCourses } from "../../../infrastructure/adapters/axios-course.repository";
+import type { Course } from "../../../infrastructure/adapters/axios-course.repository";
 
 export default function Home() {
-  const mockCourses = [
-    {
-      id: 1,
-      title: "Desarrollo Web Full Stack con Django y React",
-      description: "Aprende a crear aplicaciones modernas y escalables desde cero.",
-      icon: <Code2 className="w-6 h-6 text-blue-500" />,
-      level: "Intermedio",
-    },
-    {
-      id: 2,
-      title: "Fundamentos de Python",
-      description: "Domina el lenguaje de programación más versátil y popular del mundo.",
-      icon: <Terminal className="w-6 h-6 text-green-500" />,
-      level: "Principiante",
-    },
-    {
-      id: 3,
-      title: "Arquitectura de Software y Clean Code",
-      description: "Mejora la calidad de tu código y diseña sistemas mantenibles a largo plazo.",
-      icon: <Cpu className="w-6 h-6 text-purple-500" />,
-      level: "Avanzado",
-    }
-  ];
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const data = await getCourses();
+        setCourses(data);
+      } catch (error) {
+        console.error("Error fetching courses", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCourses();
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
@@ -91,26 +87,40 @@ export default function Home() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {mockCourses.map((course) => (
-                <div key={course.id} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow hover-scale flex flex-col h-full">
-                  <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-6">
-                    {course.icon}
+            {isLoading ? (
+              <div className="flex justify-center items-center py-20">
+                <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
+              </div>
+            ) : courses.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {courses.map((course) => (
+                  <div key={course.id} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow hover-scale flex flex-col h-full">
+                    <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 overflow-hidden">
+                      {course.thumbnail_url ? (
+                         <img src={course.thumbnail_url} alt={course.title} className="w-full h-full object-cover" />
+                      ) : (
+                         <Code2 className="w-6 h-6 text-blue-500" />
+                      )}
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">{course.title}</h3>
+                    <p className="text-slate-600 mb-6 flex-grow">{course.description || "Sin descripción"}</p>
+                    
+                    <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-100">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                        {course.level || "N/A"}
+                      </span>
+                      <button className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors">
+                        Ver Detalles &rarr;
+                      </button>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">{course.title}</h3>
-                  <p className="text-slate-600 mb-6 flex-grow">{course.description}</p>
-                  
-                  <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-100">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
-                      {course.level}
-                    </span>
-                    <button className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors">
-                      Ver Detalles &rarr;
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-10">
+                <p className="text-slate-500">No hay cursos disponibles por el momento.</p>
+              </div>
+            )}
           </div>
         </section>
       </main>
