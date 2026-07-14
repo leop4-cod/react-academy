@@ -135,6 +135,9 @@ export default function Home() {
           <p className="text-slate-500 text-sm">
             &copy; {new Date().getFullYear()} CodeAcademy. Todos los derechos reservados.
           </p>
+          <p className="text-slate-400 text-xs mt-2 font-medium tracking-wide">
+            Autor: LEOPOLDO PEREZ
+          </p>
         </div>
       </footer>
     </div>
