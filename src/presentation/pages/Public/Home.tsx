@@ -32,7 +32,7 @@ export default function Home() {
               <div className="bg-blue-600 p-2 rounded-lg">
                 <BookOpen className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-slate-900 tracking-tight">LEOPOLDO PEREZ</span>
+              <span className="text-xl font-bold text-slate-900 tracking-tight">CodeAcademy</span>
             </div>
             <div className="flex items-center gap-4">
               <Link 
@@ -130,10 +130,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <BookOpen className="h-5 w-5 text-blue-600" />
-            <span className="text-lg font-bold text-slate-900">LEOPOLDO PEREZ</span>
+            <span className="text-lg font-bold text-slate-900">CodeAcademy</span>
           </div>
           <p className="text-slate-500 text-sm">
-            &copy; {new Date().getFullYear()} LEOPOLDO PEREZ. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} CodeAcademy. Todos los derechos reservados.
           </p>
           <p className="text-slate-400 text-xs mt-2 font-medium tracking-wide">
             Autor: LEOPOLDO PEREZ
