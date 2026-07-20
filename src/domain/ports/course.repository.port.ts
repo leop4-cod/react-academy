@@ -1,4 +1,4 @@
-import { CourseEntity } from '../entities/course.entity';
+import type { CourseEntity } from '../entities/course.entity';
 
 export interface CourseRepositoryPort {
   list(params?: { category?: number; search?: string }): Promise<CourseEntity[]>;

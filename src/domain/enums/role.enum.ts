@@ -1,5 +1,7 @@
-export enum UserRole {
-  ADMIN = 'admin',
-  TEACHER = 'teacher',
-  STUDENT = 'student',
-}
+export const UserRole = {
+  ADMIN: 'admin',
+  TEACHER: 'teacher',
+  STUDENT: 'student',
+} as const;
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
