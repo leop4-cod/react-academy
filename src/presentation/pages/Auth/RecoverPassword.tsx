@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { BookOpen, Loader2, ArrowLeft, MailCheck } from "lucide-react";
+import { Loader2, ArrowLeft, Mail, MailCheck } from "lucide-react";
 import { axiosClient } from "../../../infrastructure/http/axios-client";
 
 export default function RecoverPassword() {
@@ -18,87 +18,115 @@ export default function RecoverPassword() {
       await axiosClient.post("/auth/password-reset/", { email });
       setIsSent(true);
     } catch (err: any) {
-      setError(err.response?.data?.email?.[0] || "Ocurrió un error al enviar la solicitud.");
+      console.error("Recover password error details:", err);
+      setError(
+        err.response?.data?.email?.[0] || 
+        err.response?.data?.detail || 
+        err.response?.data?.non_field_errors?.[0] ||
+        "Ocurrió un error. Por favor, verifica tus coordenadas de correo."
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex font-sans fade-in">
-      {/* Centro - Formulario Simple */}
-      <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 items-center">
-        <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden">
-          {/* Elemento de diseño superior */}
-          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden font-mono px-4">
+      {/* Texture Overlay */}
+      <div className="texture-overlay" />
 
-          <div className="mb-8">
-            <Link to="/login" className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Volver al Login
-            </Link>
-          </div>
-          
-          <div className="flex flex-col items-center text-center mb-8">
-            <div className="bg-blue-100 p-3 rounded-full mb-4">
-              <BookOpen className="h-8 w-8 text-blue-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Recuperar Contraseña</h2>
-            <p className="mt-2 text-sm text-slate-600 max-w-xs">
-              Ingresa tu correo electrónico y te enviaremos las instrucciones para restablecer tu contraseña.
+      {/* Looping space video background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
+        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_045634_e1c98c76-1265-4f5c-882a-4276f2080894.mp4"
+      />
+
+      {/* Deep dark gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#02092c] via-[#02092c]/60 to-[#02092c]/80 z-0" />
+
+      {/* Recover Card Panel */}
+      <div className="relative z-10 w-full max-w-[460px]">
+        {/* Back Link */}
+        <Link
+          to="/login"
+          className="inline-flex items-center text-xs font-grotesk tracking-widest text-cream/60 hover:text-neon uppercase mb-6 transition-colors gap-2"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Volver al Login
+        </Link>
+
+        {/* Form Container */}
+        <div className="liquid-glass rounded-[32px] p-8 md:p-10 border border-white/5 shadow-2xl backdrop-blur-xl">
+          {/* Header */}
+          <div className="text-center mb-8 relative">
+            <span className="font-condiment text-neon text-3xl absolute -top-5 right-2 -rotate-6 select-none">
+              Recuperar
+            </span>
+            <h1 className="font-grotesk text-4xl uppercase tracking-wider text-cream">
+              RESETEAR ACCESO
+            </h1>
+            <p className="text-[10px] text-cream/50 uppercase mt-2 tracking-widest">
+              Transmite coordenadas para reestablecer la llave
             </p>
           </div>
 
           {!isSent ? (
             <div className="w-full">
               {error && (
-                <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-md">
-                  <p className="text-sm text-red-700">{error}</p>
+                <div className="mb-6 bg-red-500/10 border border-red-500/30 text-red-300 text-xs px-4 py-3 rounded-xl">
+                  {error}
                 </div>
               )}
-              <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-                  Correo electrónico registrado
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="appearance-none block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
-                    placeholder="estudiante@correo.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-              </div>
 
-              <div>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Email Field */}
+                <div>
+                  <label className="block text-[11px] uppercase tracking-wider text-cream/70 mb-2">
+                    Coordenadas de Correo Registrado
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-cream/40">
+                      <Mail className="h-4 w-4" />
+                    </div>
+                    <input
+                      type="email"
+                      required
+                      placeholder="coordenadas@codeacademy.edu"
+                      className="w-full pl-11 pr-4 py-3 bg-white/[0.03] border border-white/10 rounded-[14px] text-cream placeholder-white/20 text-sm focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-all"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 transition-all"
+                  className="w-full flex justify-center items-center bg-neon text-[#010828] font-grotesk text-sm uppercase tracking-widest py-3.5 rounded-[14px] hover:bg-neon/90 hover:scale-[1.01] transition-all cursor-pointer font-bold disabled:opacity-50"
                 >
                   {isLoading ? (
-                    <Loader2 className="animate-spin h-5 w-5" />
+                    <Loader2 className="animate-spin h-5 w-5 text-[#010828]" />
                   ) : (
-                    "Enviar enlace de recuperación"
+                    "TRANSMITIR SEÑAL DE RECUPERACIÓN"
                   )}
                 </button>
-              </div>
-            </form>
+              </form>
             </div>
           ) : (
-            <div className="text-center fade-in bg-green-50 p-6 rounded-xl border border-green-100">
-              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                <MailCheck className="h-6 w-6 text-green-600" />
+            <div className="text-center bg-white/[0.02] border border-white/10 p-6 rounded-[20px] fade-in">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-neon/10 border border-neon/30 text-neon mb-4">
+                <MailCheck className="h-6 w-6" />
               </div>
-              <h3 className="text-lg font-medium text-green-800 mb-2">¡Correo enviado!</h3>
-              <p className="text-sm text-green-700">
-                Hemos enviado un enlace de recuperación a tu bandeja de entrada. Por favor, revisa también tu carpeta de spam.
+              <h3 className="text-lg font-grotesk uppercase tracking-wider text-cream mb-2">
+                SEÑAL TRANSMITIDA
+              </h3>
+              <p className="text-xs text-cream/70 leading-relaxed uppercase">
+                Se ha enviado una señal de restablecimiento de contraseña a tu correo. Revisa tu carpeta de spam si no llega pronto.
               </p>
             </div>
           )}
