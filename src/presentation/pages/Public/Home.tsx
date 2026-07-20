@@ -130,14 +130,9 @@ export default function Home() {
             {/* Título en Anton */}
             <h1 className="font-grotesk text-4xl sm:text-6xl md:text-[75px] lg:text-[90px] leading-[1.05] md:leading-[1] uppercase tracking-wider text-cream">
               MÁS ALLÁ DEL<br />
-              CÓDIGO Y ( SUS )<br />
-              LÍMITES COMUNES
+              CÓDIGO Y SUS<br />
+              LÍMITES
             </h1>
-
-            {/* Texto en manuscrito verde neón */}
-            <span className="font-condiment text-neon text-[28px] sm:text-[36px] md:text-[48px] absolute -right-2 md:right-10 top-1/2 -translate-y-1/2 -rotate-2 mix-blend-difference opacity-90 pointer-events-none select-none">
-              Colección de cursos
-            </span>
           </div>
         </div>
 
@@ -211,19 +206,19 @@ export default function Home() {
         <div className="relative z-10 w-full max-w-[1831px] mx-auto px-4 md:px-8 lg:px-12">
           {/* Fila superior: Título a la izquierda, Descripción a la derecha */}
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-16 lg:mb-32">
-            <div className="relative select-none">
+            <div className="select-none">
               <h2 className="font-grotesk text-[38px] sm:text-[50px] lg:text-[60px] leading-[1] uppercase tracking-wider text-cream">
-                HOLA!<br />
-                SOY CODEACADEMY
+                BIENVENIDO A<br />
+                CODEACADEMY
               </h2>
-              <span className="font-condiment text-neon text-[32px] sm:text-[44px] lg:text-[56px] absolute -bottom-10 right-4 -rotate-6 mix-blend-difference opacity-90 select-none">
-                Academia
-              </span>
+              <p className="text-xs font-mono text-neon uppercase tracking-widest mt-2">
+                Academia de Desarrollo Web & Programación
+              </p>
             </div>
 
             <div className="max-w-[266px]">
               <p className="font-mono text-xs sm:text-sm uppercase tracking-wider leading-relaxed text-cream select-none">
-                UN CAMPUS DIGITAL FIJADO MÁS ALLÁ DEL TIEMPO Y DEL ESPACIO. UNA EXPLORACIÓN DE LA LÓGICA, EL DISEÑO Y LA CREATIVIDAD.
+                UN CAMPUS DIGITAL DISEÑADO PARA POTENCIAR TU APRENDIZAJE EN LÓGICA, DESARROLLO Y DISEÑO.
               </p>
             </div>
           </div>
@@ -233,20 +228,20 @@ export default function Home() {
             {/* Columna izquierda */}
             <div className="flex flex-col gap-6 max-w-sm">
               <p className="font-mono text-xs uppercase tracking-wider text-cream/70 leading-relaxed">
-                ENSEÑAMOS DIVERSAS TECNOLOGÍAS DIGITALES. SI ERES TANTO PROFESOR COMO ESTUDIANTE, NUESTRO NODO ESTÁ DISEÑADO PARA EXPANDIR TU CONOCIMIENTO.
+                ENSEÑAMOS TECNOLOGÍAS DIGITALES MODERNAS. YA SEAS PROFESOR O ESTUDIANTE, NUESTRA PLATAFORMA ESTÁ DISEÑADA PARA EXPANDIR TUS HABILIDADES.
               </p>
               <p className="font-mono text-xs uppercase tracking-wider text-cream/70 leading-relaxed">
-                POTENCIA TU PERFIL YA SEA COMO PROFESOR FREELANCER O ESTUDIANTE DE CÓDIGO NÚCLEO, DISEÑANDO Y COMPLETANDO CURSOS CONECTADOS DIRECTAMENTE A NUESTRA API.
+                POTENCIA TU PERFIL CREANDO Y COMPLETANDO CURSOS CONECTADOS EN TIEMPO REAL.
               </p>
             </div>
 
             {/* Columna derecha */}
             <div className="hidden lg:flex flex-col gap-6 max-w-sm">
               <p className="font-mono text-xs uppercase tracking-wider text-cream/70 leading-relaxed">
-                RUTAS TEMÁTICAS ACTIVAS: {categoriesCount > 0 ? categoriesCount : 4} CATEGORÍAS ACADÉMICAS DISPONIBLES EN EL APRENDIZAJE.
+                RUTAS DE APRENDIZAJE: {categoriesCount > 0 ? categoriesCount : 4} CATEGORÍAS ACADÉMICAS DISPONIBLES.
               </p>
               <p className="font-mono text-xs uppercase tracking-wider text-cream/70 leading-relaxed">
-                DIPLOMAS Y CERTIFICACIONES EMITIDAS DENTRO DEL PROTOCOLO CRÍTICO DE EVALUACIÓN DE CODEACADEMY.
+                CERTIFICADOS DE FINALIZACIÓN EMITIDOS AL COMPLETAR CADA CURSO EN CODEACADEMY.
               </p>
             </div>
           </div>
@@ -260,11 +255,8 @@ export default function Home() {
           <div className="flex justify-between items-end gap-6 mb-16">
             <div>
               <h2 className="font-grotesk text-3xl sm:text-5xl lg:text-[60px] leading-[1.05] uppercase tracking-wider text-cream">
-                COLECCIÓN DE<br />
-                <span className="ml-12 md:ml-24 lg:ml-32 font-condiment text-neon lowercase tracking-normal mr-4">
-                  cursos
-                </span>
-                ESPACIALES
+                EXPLORA NUESTROS<br />
+                <span className="text-neon">CURSOS</span> DESTACADOS
               </h2>
             </div>
 
@@ -417,18 +409,13 @@ export default function Home() {
 
         {/* Contenido alineado a la derecha */}
         <div className="absolute inset-0 z-20 flex items-center justify-end px-4 md:px-8 lg:px-12 lg:pr-[20%] lg:pl-[15%] select-none">
-          <div className="relative text-right max-w-xl">
-            {/* Texto decorativo */}
-            <span className="font-condiment text-neon text-2xl sm:text-[42px] lg:text-[68px] absolute -top-12 sm:-top-20 left-0 -rotate-3 mix-blend-difference opacity-95">
-              Ve más allá
-            </span>
-
+          <div className="text-right max-w-xl">
             {/* Título */}
             <h2 className="font-grotesk text-lg sm:text-4xl lg:text-[60px] leading-[1.05] uppercase tracking-wider text-cream">
               <span className="block mb-4 sm:mb-8 text-neon">ÚNETE A NOSOTROS.</span>
-              REVELA LO OCULTO.<br />
-              DEFINE EL MAÑANA.<br />
-              SIGUE LA SEÑAL.
+              APRENDE A TU RITMO.<br />
+              DESARROLLA TU FUTURO.<br />
+              IMPULSA TU CARRERA.
             </h2>
           </div>
         </div>

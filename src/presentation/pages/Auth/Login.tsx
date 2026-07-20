@@ -75,15 +75,12 @@ export default function Login() {
         {/* Form Container */}
         <div className="liquid-glass rounded-[32px] p-8 md:p-10 border border-white/5 shadow-2xl backdrop-blur-xl">
           {/* Header */}
-          <div className="text-center mb-8 relative">
-            <span className="font-condiment text-neon text-3xl absolute -top-5 right-2 -rotate-6 select-none">
-              Ingreso
-            </span>
+          <div className="text-center mb-8">
             <h1 className="font-grotesk text-4xl uppercase tracking-wider text-cream">
               CODEACADEMY
             </h1>
-            <p className="text-[10px] text-cream/50 uppercase mt-2 tracking-widest">
-              Accede al repositorio seguro de código
+            <p className="text-xs text-neon uppercase mt-2 tracking-widest font-mono">
+              Iniciar Sesión
             </p>
           </div>
 
