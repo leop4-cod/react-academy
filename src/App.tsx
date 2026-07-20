@@ -3,6 +3,7 @@ import Home from "./presentation/pages/Public/Home";
 import Login from "./presentation/pages/Auth/Login";
 import Register from "./presentation/pages/Auth/Register";
 import RecoverPassword from "./presentation/pages/Auth/RecoverPassword";
+import NotFound from "./presentation/pages/Public/NotFound";
 import DashboardLayout from "./presentation/pages/Dashboard/DashboardLayout";
 import { useAuthStore } from "./presentation/store/auth.store";
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/recover-password" element={<RecoverPassword />} />
+        <Route path="/404" element={<NotFound />} />
         
         {/* Private Dashboard Routes */}
         <Route 
@@ -34,8 +36,8 @@ function App() {
           } 
         />
 
-        {/* Catch-all redirect to Home */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Catch-all route to NotFound */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

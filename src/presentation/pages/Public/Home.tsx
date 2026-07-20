@@ -436,6 +436,11 @@ export default function Home() {
             <span className="font-grotesk text-sm text-cream tracking-widest">CODEACADEMY</span>
           </div>
           &copy; {new Date().getFullYear()} CODEACADEMY. TODOS LOS DERECHOS RESERVADOS.
+          <div className="mt-3">
+            <Link to="/404" className="text-[9px] text-cream/40 hover:text-neon transition-colors tracking-widest lowercase underline">
+              Página 404
+            </Link>
+          </div>
         </div>
       </footer>
     </div>
