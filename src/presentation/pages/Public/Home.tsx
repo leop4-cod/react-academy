@@ -107,7 +107,7 @@ export default function Home() {
               </li>
               <li>
                 <a href="#cta" className="font-grotesk text-[13px] tracking-widest text-cream uppercase hover:text-neon transition-all">
-                  Señales
+                  Contacto
                 </a>
               </li>
             </ul>
@@ -127,12 +127,15 @@ export default function Home() {
         {/* Contenido del Hero */}
         <div className="relative z-10 w-full max-w-[1831px] mx-auto px-4 md:px-8 lg:px-12 flex-grow flex items-center">
           <div className="relative max-w-[820px] lg:ml-32 select-none">
-            {/* Título en Anton */}
+            {/* Título Principal */}
             <h1 className="font-grotesk text-4xl sm:text-6xl md:text-[75px] lg:text-[90px] leading-[1.05] md:leading-[1] uppercase tracking-wider text-cream">
-              MÁS ALLÁ DEL<br />
-              CÓDIGO Y SUS<br />
-              LÍMITES
+              DOMINA EL CÓDIGO<br />
+              Y CONSTRUYE TU<br />
+              FUTURO
             </h1>
+            <p className="mt-6 font-mono text-xs sm:text-sm tracking-widest text-cream/70 uppercase max-w-lg leading-relaxed">
+              Aprende desarrollo web y programación desde cero con proyectos reales y cursos interactivos.
+            </p>
           </div>
         </div>
 
