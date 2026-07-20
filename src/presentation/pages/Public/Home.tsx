@@ -139,7 +139,7 @@ export default function Home() {
         {/* Stack de redes sociales en Escritorio */}
         <div className="hidden lg:flex absolute right-12 top-1/3 flex-col gap-4 z-20">
           <a
-            href="mailto:support@codeacademy.edu"
+            href="mailto:codeacademy.noreply1@gmail.com"
             className="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
           >
             <Mail className="h-5 w-5 text-cream" />
@@ -153,7 +153,7 @@ export default function Home() {
             <Twitter className="h-5 w-5 text-cream" />
           </a>
           <a
-            href="https://github.com"
+            href="https://github.com/leop4-cod/react-academy"
             target="_blank"
             rel="noreferrer"
             className="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
@@ -165,7 +165,7 @@ export default function Home() {
         {/* Stack de redes sociales en Móvil */}
         <div className="flex lg:hidden justify-center gap-6 pb-12 relative z-20">
           <a
-            href="mailto:support@codeacademy.edu"
+            href="mailto:codeacademy.noreply1@gmail.com"
             className="w-[48px] h-[48px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
           >
             <Mail className="h-4 w-4 text-cream" />
@@ -179,7 +179,7 @@ export default function Home() {
             <Twitter className="h-4 w-4 text-cream" />
           </a>
           <a
-            href="https://github.com"
+            href="https://github.com/leop4-cod/react-academy"
             target="_blank"
             rel="noreferrer"
             className="w-[48px] h-[48px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
@@ -424,7 +424,7 @@ export default function Home() {
         <div className="absolute left-[8%] bottom-[8%] sm:bottom-[12%] lg:bottom-[15%] z-20 flex flex-col">
           <div className="liquid-glass rounded-[0.5rem] sm:rounded-[1.25rem] border border-white/5 flex flex-col overflow-hidden">
             <a
-              href="mailto:support@codeacademy.edu"
+              href="mailto:codeacademy.noreply1@gmail.com"
               className="w-[12vw] sm:w-[14.375rem] md:w-[10.78125rem] lg:w-[16.77rem] h-[12vw] sm:h-[4.5rem] flex items-center justify-center border-b border-white/10 hover:bg-white/10 transition-all text-cream hover:text-neon"
             >
               <Mail className="h-[4vw] sm:h-5 w-[4vw] sm:w-5" />
@@ -438,7 +438,7 @@ export default function Home() {
               <Twitter className="h-[4vw] sm:h-5 w-[4vw] sm:w-5" />
             </a>
             <a
-              href="https://github.com"
+              href="https://github.com/leop4-cod/react-academy"
               target="_blank"
               rel="noreferrer"
               className="w-[12vw] sm:w-[14.375rem] md:w-[10.78125rem] lg:w-[16.77rem] h-[12vw] sm:h-[4.5rem] flex items-center justify-center hover:bg-white/10 transition-all text-cream hover:text-neon"
