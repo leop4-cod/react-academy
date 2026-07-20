@@ -1,38 +1,89 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #3b82f6; /* Blue 500 */
-  --color-primary-dark: #2563eb; /* Blue 600 */
-  --color-secondary: #64748b; /* Slate 500 */
-  --color-background: #f8fafc; /* Slate 50 */
-  --color-surface: #ffffff; /* White */
-  --color-text: #0f172a; /* Slate 900 */
-  --color-text-muted: #64748b; /* Slate 500 */
+  --color-background: #010828;
+  --color-cream: #EFF4FF;
+  --color-neon: #6FFF00;
+  
+  --font-grotesk: "Anton", sans-serif;
+  --font-condiment: "Condiment", cursive;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* Base styles for smooth fonts and clean layout */
+/* Base styles for the dark space theme */
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background-color: var(--color-background);
-  color: var(--color-text);
+  background: radial-gradient(circle at 50% 0%, #0d1f5e 0%, #02092c 100%);
+  background-attachment: fixed;
+  color: #EFF4FF;
+  font-family: var(--font-mono);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Micro-animations and utility classes */
+/* Texture Overlay */
+.texture-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background-image: url('/texture.png');
+  background-size: repeat;
+  mix-blend-mode: lighten;
+  opacity: 0.08; /* Extremely subtle fine grain for premium texture without clutter */
+}
+
+/* Liquid Glass CSS Effect */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
+    rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
+    rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Smooth micro-interactions */
 .hover-scale {
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
 }
 .hover-scale:hover {
   transform: scale(1.02);
 }
 
 .fade-in {
-  animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
