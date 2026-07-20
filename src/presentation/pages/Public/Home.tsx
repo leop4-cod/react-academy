@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Mail, Twitter, Github, ChevronRight, Loader2, BookOpen, User as UserIcon } from "lucide-react";
+import { Mail, Github, ChevronRight, Loader2, BookOpen, User as UserIcon } from "lucide-react";
 import { apiService } from "../../../infrastructure/http/api-service";
 import type { Course, User } from "../../../infrastructure/http/api-service";
 import { useAuthStore } from "../../store/auth.store";
@@ -145,14 +145,6 @@ export default function Home() {
             <Mail className="h-5 w-5 text-cream" />
           </a>
           <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noreferrer"
-            className="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
-          >
-            <Twitter className="h-5 w-5 text-cream" />
-          </a>
-          <a
             href="https://github.com/leop4-cod/react-academy"
             target="_blank"
             rel="noreferrer"
@@ -169,14 +161,6 @@ export default function Home() {
             className="w-[48px] h-[48px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
           >
             <Mail className="h-4 w-4 text-cream" />
-          </a>
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noreferrer"
-            className="w-[48px] h-[48px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
-          >
-            <Twitter className="h-4 w-4 text-cream" />
           </a>
           <a
             href="https://github.com/leop4-cod/react-academy"
@@ -428,14 +412,6 @@ export default function Home() {
               className="w-[12vw] sm:w-[14.375rem] md:w-[10.78125rem] lg:w-[16.77rem] h-[12vw] sm:h-[4.5rem] flex items-center justify-center border-b border-white/10 hover:bg-white/10 transition-all text-cream hover:text-neon"
             >
               <Mail className="h-[4vw] sm:h-5 w-[4vw] sm:w-5" />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noreferrer"
-              className="w-[12vw] sm:w-[14.375rem] md:w-[10.78125rem] lg:w-[16.77rem] h-[12vw] sm:h-[4.5rem] flex items-center justify-center border-b border-white/10 hover:bg-white/10 transition-all text-cream hover:text-neon"
-            >
-              <Twitter className="h-[4vw] sm:h-5 w-[4vw] sm:w-5" />
             </a>
             <a
               href="https://github.com/leop4-cod/react-academy"
