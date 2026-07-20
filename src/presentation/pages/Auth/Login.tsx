@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { BookOpen, Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, Mail, Lock } from "lucide-react";
 import { axiosClient } from "../../../infrastructure/http/axios-client";
 import { useAuthStore } from "../../store/auth.store";
+import { apiService } from "../../../infrastructure/http/api-service";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -22,152 +23,166 @@ export default function Login() {
         email,
         password,
       });
-      // El backend de SimpleJWT suele devolver { access, refresh }
-      const token = response.data.access;
+      const token = response.data.access || response.data.token;
+      
       setAuth(token);
-      navigate("/");
+      
+      const profile = await apiService.profile.get();
+      setAuth(token, profile);
+      
+      navigate("/dashboard");
     } catch (err: any) {
-      setError(err.response?.data?.detail || "Credenciales inválidas. Inténtalo de nuevo.");
+      console.error("Login error details:", err);
+      setError(
+        err.response?.data?.detail || 
+        err.response?.data?.non_field_errors?.[0] ||
+        "Credenciales inválidas. Por favor, verifica tu correo y contraseña."
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex font-sans fade-in">
-      {/* Columna Izquierda - Formulario */}
-      <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:w-1/2 xl:px-24">
-        <div className="mx-auto w-full max-w-sm lg:w-96">
-          <Link to="/" className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-700 mb-8 transition-colors">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Volver al inicio
-          </Link>
-          
-          <div>
-            <div className="flex items-center gap-2 mb-8">
-              <div className="bg-blue-600 p-2 rounded-lg">
-                <BookOpen className="h-6 w-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-slate-900 tracking-tight">CodeAcademy</span>
-            </div>
-            <h2 className="mt-6 text-3xl font-extrabold text-slate-900">
-              Inicia sesión
-            </h2>
-            <p className="mt-2 text-sm text-slate-600">
-              ¿No tienes una cuenta?{' '}
-              <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
-                Regístrate gratis
-              </Link>
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden font-mono px-4">
+      {/* Texture Overlay */}
+      <div className="texture-overlay" />
+
+      {/* Looping space video background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
+        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_045634_e1c98c76-1265-4f5c-882a-4276f2080894.mp4"
+      />
+
+      {/* Deep dark gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#02092c] via-[#02092c]/60 to-[#02092c]/80 z-0" />
+
+      {/* Login Card Panel */}
+      <div className="relative z-10 w-full max-w-[460px]">
+        {/* Back Link */}
+        <Link
+          to="/"
+          className="inline-flex items-center text-xs font-grotesk tracking-widest text-cream/60 hover:text-neon uppercase mb-6 transition-colors gap-2"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Volver al Inicio
+        </Link>
+
+        {/* Form Container */}
+        <div className="liquid-glass rounded-[32px] p-8 md:p-10 border border-white/5 shadow-2xl backdrop-blur-xl">
+          {/* Header */}
+          <div className="text-center mb-8 relative">
+            <span className="font-condiment text-neon text-3xl absolute -top-5 right-2 -rotate-6 select-none">
+              Ingreso
+            </span>
+            <h1 className="font-grotesk text-4xl uppercase tracking-wider text-cream">
+              CODEACADEMY
+            </h1>
+            <p className="text-[10px] text-cream/50 uppercase mt-2 tracking-widest">
+              Accede al repositorio seguro de código
             </p>
           </div>
 
-          <div className="mt-8">
-            {error && (
-              <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-md">
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
-            )}
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-                  Correo electrónico
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="appearance-none block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
-                    placeholder="estudiante@correo.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
+          {error && (
+            <div className="mb-6 bg-red-500/10 border border-red-500/30 text-red-300 text-xs px-4 py-3 rounded-xl">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Email Field */}
+            <div>
+              <label className="block text-[11px] uppercase tracking-wider text-cream/70 mb-2">
+                Coordenadas de Correo
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-cream/40">
+                  <Mail className="h-4 w-4" />
                 </div>
-              </div>
-
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-slate-700">
-                  Contraseña
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="appearance-none block w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-300 rounded cursor-pointer"
-                  />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-slate-700 cursor-pointer">
-                    Recordarme
-                  </label>
-                </div>
-
-                <div className="text-sm">
-                  <Link to="/recover-password" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
-                    ¿Olvidaste tu contraseña?
-                  </Link>
-                </div>
-              </div>
-
-              <div>
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 transition-all"
-                >
-                  {isLoading ? (
-                    <Loader2 className="animate-spin h-5 w-5" />
-                  ) : (
-                    "Ingresar a la plataforma"
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      {/* Columna Derecha - Imagen/Decoración */}
-      <div className="hidden lg:block relative w-0 flex-1 bg-slate-900">
-        <div className="absolute inset-0 h-full w-full object-cover bg-gradient-to-br from-blue-900 via-slate-900 to-black overflow-hidden flex items-center justify-center">
-            {/* Elemento de diseño abstracto simulando código/tecnología */}
-            <div className="absolute w-[800px] h-[800px] bg-blue-500/10 rounded-full blur-3xl -top-48 -right-48"></div>
-            <div className="absolute w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-3xl bottom-0 left-0"></div>
-            
-            <div className="relative z-10 max-w-lg px-8 text-center text-white">
-              <h2 className="text-3xl font-bold mb-6">Tu viaje al dominio del código comienza aquí</h2>
-              <p className="text-slate-300 text-lg leading-relaxed">
-                Accede a tu panel, retoma tus cursos y continúa construyendo tu portafolio profesional con la guía de expertos.
-              </p>
-              
-              <div className="mt-10 grid grid-cols-2 gap-4 text-left">
-                  <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
-                      <div className="font-bold text-2xl text-blue-400 mb-1">+50</div>
-                      <div className="text-sm text-slate-300">Cursos disponibles</div>
-                  </div>
-                  <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
-                      <div className="font-bold text-2xl text-purple-400 mb-1">10k</div>
-                      <div className="text-sm text-slate-300">Estudiantes activos</div>
-                  </div>
+                <input
+                  type="email"
+                  required
+                  placeholder="nombre@dominio.com"
+                  className="w-full pl-11 pr-4 py-3 bg-white/[0.03] border border-white/10 rounded-[14px] text-cream placeholder-white/20 text-sm focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-all"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
             </div>
+
+            {/* Password Field */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-[11px] uppercase tracking-wider text-cream/70">
+                  Llave de Acceso
+                </label>
+                <Link
+                  to="/recover-password"
+                  className="text-[10px] text-cream/50 hover:text-neon transition-colors uppercase tracking-wider"
+                >
+                  ¿La olvidaste?
+                </Link>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-cream/40">
+                  <Lock className="h-4 w-4" />
+                </div>
+                <input
+                  type="password"
+                  required
+                  placeholder="••••••••"
+                  className="w-full pl-11 pr-4 py-3 bg-white/[0.03] border border-white/10 rounded-[14px] text-cream placeholder-white/20 text-sm focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-all"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* Remember Me */}
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                type="checkbox"
+                className="h-4 w-4 bg-white/5 border border-white/10 rounded accent-neon cursor-pointer"
+              />
+              <label
+                htmlFor="remember-me"
+                className="ml-2.5 text-[11px] text-cream/60 uppercase tracking-wider cursor-pointer hover:text-cream select-none transition-colors"
+              >
+                Mantener conexión activa
+              </label>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full flex justify-center items-center bg-neon text-[#010828] font-grotesk text-sm uppercase tracking-widest py-3.5 rounded-[14px] hover:bg-neon/90 hover:scale-[1.01] transition-all cursor-pointer font-bold disabled:opacity-50"
+            >
+              {isLoading ? (
+                <Loader2 className="animate-spin h-5 w-5 text-[#010828]" />
+              ) : (
+                "INICIAR SESIÓN"
+              )}
+            </button>
+          </form>
+
+          {/* Footer Navigation */}
+          <div className="mt-8 text-center border-t border-white/5 pt-6">
+            <p className="text-xs text-cream/60 uppercase tracking-wider">
+              ¿Nuevo explorador?{" "}
+              <Link
+                to="/register"
+                className="text-neon hover:underline font-bold transition-colors"
+              >
+                Crear Cuenta
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>
