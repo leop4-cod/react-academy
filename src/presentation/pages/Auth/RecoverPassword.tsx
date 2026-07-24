@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, ArrowLeft, Mail, MailCheck } from "lucide-react";
-import { axiosClient } from "../../../infrastructure/http/axios-client";
+import { axiosPublic } from "../../../infrastructure/http/axios-client";
 
 export default function RecoverPassword() {
   const [email, setEmail] = useState("");
@@ -15,7 +15,7 @@ export default function RecoverPassword() {
     setError("");
     
     try {
-      await axiosClient.post("/auth/password-reset/", { email });
+      await axiosPublic.post("/auth/password-reset/", { email });
       setIsSent(true);
     } catch (err: any) {
       console.error("Recover password error details:", err);

@@ -155,7 +155,8 @@ export default function CoursesExplorer() {
           id: Date.now(),
           course: courseId,
           student: 0,
-          enrolled_at: new Date().toISOString()
+          enrolled_at: new Date().toISOString(),
+          is_completed: false
         };
         setEnrollments((prev) => {
           const exists = prev.some((e) => {

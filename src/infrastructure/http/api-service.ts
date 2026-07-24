@@ -221,9 +221,21 @@ export const apiService = {
     },
     deleteAvatar: async (): Promise<void> => {
       await axiosClient.delete('/auth/profile/avatar/');
+    }
+  },
+
+  // Authentication & Password Reset
+  auth: {
+    requestPasswordReset: async (email: string): Promise<void> => {
+      await axiosPublic.post('/auth/password-reset/', { email });
     },
-    resetPassword: async (): Promise<void> => {
-      await axiosClient.post('/auth/password-reset/');
+    confirmPasswordReset: async (data: { uid: string; token: string; new_password: string }): Promise<void> => {
+      await axiosPublic.post('/auth/password-reset-confirm/', {
+        uid: data.uid,
+        uidb64: data.uid,
+        token: data.token,
+        new_password: data.new_password
+      });
     }
   },
 
