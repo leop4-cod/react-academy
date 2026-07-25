@@ -371,10 +371,19 @@ export default function ManagementPanel() {
           )}
           {["quizzes", "categories", "subcategories", "tags"].includes(activeTab) && (
             <button
-              onClick={() => handleOpenAddSimple(activeTab.slice(0, -1) as any)}
+              onClick={() => {
+                const typeMap: Record<string, "quiz" | "category" | "subcategory" | "tag"> = {
+                  quizzes: "quiz", categories: "category", subcategories: "subcategory", tags: "tag"
+                };
+                handleOpenAddSimple(typeMap[activeTab]);
+              }}
               className="px-4 py-2 bg-neon text-[#010828] text-xs font-grotesk font-bold uppercase tracking-wider rounded-xl hover:scale-105 transition-all cursor-pointer flex items-center gap-1.5"
             >
-              <Plus className="h-4 w-4" /> Agregar {activeTab.slice(0, -1).toUpperCase()}
+              <Plus className="h-4 w-4" /> Agregar {
+                activeTab === "quizzes" ? "EVALUACIÓN" :
+                  activeTab === "subcategories" ? "SUBCATEGORÍA" :
+                    activeTab === "categories" ? "CATEGORÍA" : "ETIQUETA"
+              }
             </button>
           )}
         </div>
