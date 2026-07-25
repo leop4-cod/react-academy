@@ -302,18 +302,13 @@ export default function MyLearning() {
   const handleClaimCertificateFromQuiz = async () => {
     if (!selectedEnrollment) return;
     setCertClaiming(true);
-    try {
-      await apiService.certificates.create(selectedEnrollment.course);
+
+    // Simular retraso mágico para generar diploma de mentira
+    setTimeout(() => {
       setCertClaimed(true);
       setShowFakeCert(true);
-    } catch (err: any) {
-      console.error("Fallo al generar certificado:", err);
-      // Para efectos visuales si falla en backend igual lo mostramos (fake ui test)
-      setCertClaimed(true);
-      setShowFakeCert(true);
-    } finally {
       setCertClaiming(false);
-    }
+    }, 1200);
   };
 
   // ─── Loading State ────────────────────────────────────────────────────────

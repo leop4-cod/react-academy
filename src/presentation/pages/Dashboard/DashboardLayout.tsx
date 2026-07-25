@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
-import { 
-  LayoutDashboard, Search, BookOpen, MessageSquare, Award, Settings, Database, 
+import {
+  LayoutDashboard, Search, BookOpen, MessageSquare, Bookmark, Settings, Database,
   LogOut, Menu, X, User as UserIcon, Bell, ShieldAlert
 } from "lucide-react";
 import { useAuthStore } from "../../store/auth.store";
@@ -19,7 +19,7 @@ import ManagementPanel from "./Views/ManagementPanel";
 function ManagementRoute({ children }: { children: React.ReactNode }) {
   const { user, isAdmin } = useAuthStore();
   const isTeacher = user?.role === 'teacher' || user?.is_teacher || isAdmin;
-  
+
   if (!isTeacher) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center gap-6 p-8">
@@ -44,7 +44,7 @@ export default function DashboardLayout() {
   const { user, logout, isAdmin } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // Mobile drawer state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -67,7 +67,7 @@ export default function DashboardLayout() {
     { path: "/dashboard/explorer", label: "Explorador", icon: Search },
     { path: "/dashboard/learning", label: "Mi Aprendizaje", icon: BookOpen },
     { path: "/dashboard/forums", label: "Foros", icon: MessageSquare },
-    { path: "/dashboard/records", label: "Certificados", icon: Award },
+    { path: "/dashboard/records", label: "Guardados", icon: Bookmark },
     { path: "/dashboard/profile", label: "Configuración", icon: Settings },
   ];
 
@@ -113,11 +113,10 @@ export default function DashboardLayout() {
               <h4 className="font-grotesk text-xs uppercase text-cream tracking-wider truncate">
                 {user?.first_name || "Explorador"} {user?.last_name || "CodeAcademy"}
               </h4>
-              <span className={`inline-block mt-0.5 px-2 py-0.5 text-[8px] rounded uppercase font-bold tracking-widest font-mono border ${
-                isAdmin
+              <span className={`inline-block mt-0.5 px-2 py-0.5 text-[8px] rounded uppercase font-bold tracking-widest font-mono border ${isAdmin
                   ? "bg-red-500/10 border-red-400/30 text-red-300"
                   : "bg-neon/10 border-neon/30 text-neon"
-              }`}>
+                }`}>
                 {isAdmin ? "ADMIN" : (user?.role === 'teacher' ? 'PROFESOR' : 'ESTUDIANTE')}
               </span>
             </div>
@@ -126,8 +125,8 @@ export default function DashboardLayout() {
           {/* Enlaces de navegación */}
           <nav className="space-y-1">
             {navLinks.map((link) => {
-              const active = link.exact 
-                ? location.pathname === link.path 
+              const active = link.exact
+                ? location.pathname === link.path
                 : location.pathname.startsWith(link.path);
               const Icon = link.icon;
               const isAdminLink = "adminOnly" in link && link.adminOnly;
@@ -135,15 +134,14 @@ export default function DashboardLayout() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border text-xs uppercase font-grotesk tracking-widest transition-all ${
-                    active
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border text-xs uppercase font-grotesk tracking-widest transition-all ${active
                       ? isAdminLink
                         ? "bg-red-500/20 text-red-300 border-red-400/30 font-bold"
                         : "bg-neon text-[#010828] border-neon font-bold"
                       : isAdminLink
                         ? "bg-transparent border-transparent text-red-400/60 hover:bg-red-500/10 hover:text-red-300"
                         : "bg-transparent border-transparent text-cream/70 hover:bg-white/5 hover:text-cream"
-                  }`}
+                    }`}
                 >
                   <Icon className="h-4 w-4" />
                   {link.label}
@@ -165,7 +163,7 @@ export default function DashboardLayout() {
 
       {/* 2. Área de contenido principal */}
       <div className="flex-grow flex flex-col min-w-0 min-h-screen relative z-10">
-        
+
         {/* Encabezado Móvil */}
         <header className="lg:hidden px-4 py-4 bg-[#02092c]/70 border-b border-white/5 flex justify-between items-center relative z-30">
           <Link to="/" className="font-grotesk text-sm uppercase tracking-widest">
@@ -184,7 +182,7 @@ export default function DashboardLayout() {
           <h2 className="font-grotesk text-xl uppercase tracking-widest text-cream">
             {getPageTitle()}
           </h2>
-          
+
           <div className="flex items-center gap-4">
             {/* Alertas */}
             <Link
@@ -258,9 +256,8 @@ export default function DashboardLayout() {
                 <h4 className="font-grotesk text-xs uppercase text-cream tracking-wider">
                   {user?.first_name || "Explorador"}
                 </h4>
-                <span className={`inline-block mt-0.5 px-2 py-0.5 text-[7px] rounded uppercase font-bold tracking-widest border ${
-                  isAdmin ? "bg-red-500/10 border-red-400/30 text-red-300" : "bg-neon/10 border-neon/30 text-neon"
-                }`}>
+                <span className={`inline-block mt-0.5 px-2 py-0.5 text-[7px] rounded uppercase font-bold tracking-widest border ${isAdmin ? "bg-red-500/10 border-red-400/30 text-red-300" : "bg-neon/10 border-neon/30 text-neon"
+                  }`}>
                   {isAdmin ? "ADMIN" : (user?.role === 'teacher' ? 'PROFESOR' : 'ESTUDIANTE')}
                 </span>
               </div>
@@ -269,8 +266,8 @@ export default function DashboardLayout() {
             {/* Enlaces de navegación */}
             <nav className="flex flex-col gap-2">
               {navLinks.map((link) => {
-                const active = link.exact 
-                  ? location.pathname === link.path 
+                const active = link.exact
+                  ? location.pathname === link.path
                   : location.pathname.startsWith(link.path);
                 const Icon = link.icon;
                 const isAdminLink = "adminOnly" in link && link.adminOnly;
@@ -279,15 +276,14 @@ export default function DashboardLayout() {
                     key={link.path}
                     to={link.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-xs uppercase font-grotesk tracking-widest transition-all ${
-                      active
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-xs uppercase font-grotesk tracking-widest transition-all ${active
                         ? isAdminLink
                           ? "bg-red-500/20 text-red-300 border-red-400/30 font-bold"
                           : "bg-neon text-[#010828] border-neon font-bold"
                         : isAdminLink
                           ? "bg-transparent border-transparent text-red-400/60 hover:bg-red-500/10 hover:text-red-300"
                           : "bg-transparent border-transparent text-cream/70 hover:bg-white/5 hover:text-cream"
-                    }`}
+                      }`}
                   >
                     <Icon className="h-4.5 w-4.5" />
                     {link.label}
