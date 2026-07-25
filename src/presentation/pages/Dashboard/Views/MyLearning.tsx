@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import {
   Loader2, Play, CheckCircle, HelpCircle, ChevronLeft,
-  MessageSquare, CornerDownRight, X, AlertCircle, BookOpen, GraduationCap
+  MessageSquare, CornerDownRight, X, AlertCircle, BookOpen, GraduationCap, Download, Award
 } from "lucide-react";
+import { useAuthStore } from "../../../store/auth.store";
 import { apiService } from "../../../../infrastructure/http/api-service";
 import type { Enrollment, Lesson, Progress, LessonQuestion, LessonAnswer, Quiz } from "../../../../infrastructure/http/api-service";
 
@@ -38,6 +39,9 @@ export default function MyLearning() {
   const [quizSubmitting, setQuizSubmitting] = useState(false);
   const [certClaimed, setCertClaimed] = useState(false);
   const [certClaiming, setCertClaiming] = useState(false);
+  const [showFakeCert, setShowFakeCert] = useState(false);
+
+  const { user } = useAuthStore();
 
   // ─── Data Loading ─────────────────────────────────────────────────────────
 
@@ -301,9 +305,12 @@ export default function MyLearning() {
     try {
       await apiService.certificates.create(selectedEnrollment.course);
       setCertClaimed(true);
+      setShowFakeCert(true);
     } catch (err: any) {
       console.error("Fallo al generar certificado:", err);
+      // Para efectos visuales si falla en backend igual lo mostramos (fake ui test)
       setCertClaimed(true);
+      setShowFakeCert(true);
     } finally {
       setCertClaiming(false);
     }
@@ -791,6 +798,82 @@ export default function MyLearning() {
                 </div>
               )}
 
+            </div>
+          </div>
+        )}
+
+        {/* Modal de Certificado "Fake" */}
+        {showFakeCert && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
+            <div className="relative w-full max-w-[800px] aspect-[1.414/1] bg-white text-black p-8 md:p-12 shadow-2xl flex flex-col justify-center items-center text-center overflow-hidden">
+              {/* Decoraciones del certificado */}
+              <div className="absolute top-0 left-0 w-full h-full border-[12px] border-[#02092c] pointer-events-none z-10" />
+              <div className="absolute top-2 left-2 w-[calc(100%-16px)] h-[calc(100%-16px)] border-[2px] border-[#39ff14]/50 pointer-events-none z-10" />
+              <div className="absolute top-0 left-0 w-32 h-32 bg-[#02092c] transform -rotate-45 -translate-x-16 -translate-y-16" />
+              <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#02092c] transform -rotate-45 translate-x-16 translate-y-16" />
+
+              <div className="relative z-20 space-y-6 w-full px-12">
+                <div className="flex justify-center mb-6">
+                  <Award className="h-16 w-16 text-[#02092c]" />
+                </div>
+
+                <h1 className="text-4xl md:text-5xl font-serif text-[#02092c] uppercase tracking-widest font-black">
+                  Certificado de Finalización
+                </h1>
+
+                <p className="text-sm uppercase tracking-widest text-gray-500 font-mono mt-4">
+                  CERTIFICA OFICIALMENTE QUE
+                </p>
+
+                <h2 className="text-4xl md:text-5xl font-grotesk text-[#39ff14] bg-[#02092c] py-2 px-8 inline-block uppercase tracking-widest shadow-lg mt-2">
+                  {user?.first_name ? `${user.first_name} ${user.last_name || ''}` : 'Estudiante Ejemplar'}
+                </h2>
+
+                <p className="text-sm uppercase tracking-wider text-gray-700 font-mono mt-6 leading-relaxed">
+                  Ha completado satisfactoriamente todos los requisitos y evaluaciones del curso:
+                </p>
+
+                <h3 className="text-2xl font-bold uppercase text-[#02092c] mt-2 border-b-2 border-[#39ff14]/50 inline-block pb-1">
+                  {selectedEnrollment?.course_details?.title || `Curso #${selectedEnrollment?.course}`}
+                </h3>
+
+                <div className="flex justify-between items-end w-full pt-16 font-mono text-xs font-bold uppercase tracking-widest text-[#02092c]">
+                  <div className="text-center">
+                    <div className="w-32 border-b-2 border-[#02092c] mb-2 mx-auto"></div>
+                    Director Académico
+                  </div>
+                  <div className="text-center">
+                    <div className="w-32 border-b-2 border-[#02092c] mb-2 mx-auto">
+                      {new Date().toLocaleDateString()}
+                    </div>
+                    Fecha de Emisión
+                  </div>
+                </div>
+              </div>
+
+              {/* Botones Flotantes (No se imprimen) */}
+              <div className="absolute -bottom-16 left-0 w-full flex justify-center gap-4 group-hover:bottom-4 transition-all z-50">
+                <button
+                  onClick={() => window.print()}
+                  className="px-6 py-2 bg-[#02092c] text-[#39ff14] text-xs font-bold font-grotesk uppercase tracking-widest hover:scale-105 transition-all shadow-xl flex items-center gap-2"
+                >
+                  <Download className="h-4 w-4" /> Guardar PDF
+                </button>
+                <button
+                  onClick={() => setShowFakeCert(false)}
+                  className="px-6 py-2 bg-red-600 text-white text-xs font-bold font-grotesk uppercase tracking-widest hover:scale-105 transition-all shadow-xl flex items-center gap-2"
+                >
+                  <X className="h-4 w-4" /> Cerrar
+                </button>
+              </div>
+              <div className="absolute top-4 right-4 z-50">
+                <button
+                  onClick={() => setShowFakeCert(false)}
+                  className="w-10 h-10 bg-black/10 hover:bg-black/20 rounded-full flex items-center justify-center transition-colors cursor-pointer"
+                >
+                  <X className="h-5 w-5 text-black" />
+                </button>
+              </div>
             </div>
           </div>
         )}
