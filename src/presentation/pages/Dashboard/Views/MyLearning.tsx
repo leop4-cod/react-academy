@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import {
   Loader2, Play, CheckCircle, HelpCircle, ChevronLeft,
-  MessageSquare, CornerDownRight, X, AlertCircle, BookOpen
+  MessageSquare, CornerDownRight, X, AlertCircle, BookOpen, GraduationCap
 } from "lucide-react";
 import { apiService } from "../../../../infrastructure/http/api-service";
 import type { Enrollment, Lesson, Progress, LessonQuestion, LessonAnswer, Quiz } from "../../../../infrastructure/http/api-service";
@@ -374,11 +374,10 @@ export default function MyLearning() {
                     <button
                       key={les.id}
                       onClick={() => handleSelectLesson(les)}
-                      className={`w-full text-left p-3 rounded-xl border flex items-center justify-between gap-2 transition-all cursor-pointer ${
-                        active
-                          ? "bg-neon/10 border-neon text-neon font-bold"
-                          : "bg-white/[0.01] border-white/5 text-cream/70 hover:bg-white/5 hover:border-white/20"
-                      }`}
+                      className={`w-full text-left p-3 rounded-xl border flex items-center justify-between gap-2 transition-all cursor-pointer ${active
+                        ? "bg-neon/10 border-neon text-neon font-bold"
+                        : "bg-white/[0.01] border-white/5 text-cream/70 hover:bg-white/5 hover:border-white/20"
+                        }`}
                     >
                       <div className="space-y-1">
                         <div className="text-[8px] uppercase tracking-widest font-mono">
@@ -421,6 +420,20 @@ export default function MyLearning() {
                 ))}
               </div>
             )}
+            {/* Finalizar Curso */}
+            <div className="space-y-2.5 pt-4 border-t border-white/5 mt-4">
+              <h4 className="font-grotesk text-[10px] uppercase tracking-widest text-cream/60">
+                Certificación Oficial
+              </h4>
+              <button
+                onClick={handleClaimCertificateFromQuiz}
+                disabled={certClaiming}
+                className="w-full py-2.5 bg-neon text-[#010828] text-[10px] font-grotesk font-bold uppercase tracking-wider rounded-xl hover:scale-105 transition-all cursor-pointer flex items-center justify-center gap-2"
+              >
+                <GraduationCap className="h-4 w-4" />
+                {certClaiming ? "VERIFICANDO..." : (certClaimed ? "¡CERTIFICADO CREADO!" : "FINALIZAR CURSO Y OBTENER CERTIFICADO")}
+              </button>
+            </div>
           </div>
 
           {/* Columna Derecha: Reproductor + Q&A */}
@@ -431,13 +444,36 @@ export default function MyLearning() {
                 {/* Reproductor de Video */}
                 <div className="liquid-glass rounded-3xl border border-white/5 overflow-hidden shadow-xl aspect-video relative bg-[#02092c]">
                   {activeLesson.video_url ? (
-                    <video
-                      autoPlay
-                      controls
-                      key={activeLesson.video_url}
-                      className="w-full h-full object-contain"
-                      src={activeLesson.video_url}
-                    />
+                    (() => {
+                      const url = activeLesson.video_url;
+                      const isYoutube = url.includes("youtube.com") || url.includes("youtu.be");
+                      let embedUrl = url;
+                      if (isYoutube) {
+                        if (url.includes("youtube.com/watch")) {
+                          embedUrl = url.replace("watch?v=", "embed/");
+                        } else if (url.includes("youtu.be/")) {
+                          embedUrl = url.replace("youtu.be/", "youtube.com/embed/");
+                        }
+                      }
+
+                      return isYoutube ? (
+                        <iframe
+                          key={url}
+                          className="w-full h-full object-contain"
+                          src={embedUrl}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      ) : (
+                        <video
+                          autoPlay
+                          controls
+                          key={url}
+                          className="w-full h-full object-contain"
+                          src={url}
+                        />
+                      );
+                    })()
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-cream/30">
                       <BookOpen className="h-12 w-12" />
@@ -459,11 +495,10 @@ export default function MyLearning() {
                     </div>
                     <button
                       onClick={() => handleToggleLessonCompleted(activeLesson.id)}
-                      className={`px-4 py-2 border rounded-xl text-xs uppercase font-grotesk tracking-wider flex items-center gap-2 cursor-pointer transition-all ${
-                        isLessonCompleted(activeLesson.id)
-                          ? "bg-neon/15 border-neon text-neon"
-                          : "bg-white/5 border-white/10 hover:border-white/20 text-cream/70"
-                      }`}
+                      className={`px-4 py-2 border rounded-xl text-xs uppercase font-grotesk tracking-wider flex items-center gap-2 cursor-pointer transition-all ${isLessonCompleted(activeLesson.id)
+                        ? "bg-neon/15 border-neon text-neon"
+                        : "bg-white/5 border-white/10 hover:border-white/20 text-cream/70"
+                        }`}
                     >
                       <CheckCircle className="h-4 w-4" />
                       {isLessonCompleted(activeLesson.id) ? "Marcar Incompleto" : "Marcar Completado"}
@@ -520,11 +555,10 @@ export default function MyLearning() {
                             <button
                               key={q.id}
                               onClick={() => handleSelectQuestion(q)}
-                              className={`w-full text-left p-3 rounded-xl border transition-all cursor-pointer ${
-                                selectedQuestion?.id === q.id
-                                  ? "bg-white/10 border-neon"
-                                  : "bg-white/[0.01] border-white/5 hover:border-white/20"
-                              }`}
+                              className={`w-full text-left p-3 rounded-xl border transition-all cursor-pointer ${selectedQuestion?.id === q.id
+                                ? "bg-white/10 border-neon"
+                                : "bg-white/[0.01] border-white/5 hover:border-white/20"
+                                }`}
                             >
                               <div className="flex justify-between items-center text-[8px] text-cream/40 uppercase mb-1">
                                 <span>{q.student_name || "Explorador"}</span>
@@ -668,15 +702,13 @@ export default function MyLearning() {
                                 key={optIdx}
                                 type="button"
                                 onClick={() => handleOptionSelect(q.id, optIdx)}
-                                className={`w-full text-left px-3.5 py-2.5 rounded-xl border text-xs uppercase font-mono tracking-wider transition-all cursor-pointer flex items-center gap-2.5 ${
-                                  isSelected
-                                    ? "bg-neon/15 border-neon text-neon font-bold"
-                                    : "bg-white/[0.02] border-white/5 text-cream/70 hover:bg-white/5 hover:border-white/20"
-                                }`}
+                                className={`w-full text-left px-3.5 py-2.5 rounded-xl border text-xs uppercase font-mono tracking-wider transition-all cursor-pointer flex items-center gap-2.5 ${isSelected
+                                  ? "bg-neon/15 border-neon text-neon font-bold"
+                                  : "bg-white/[0.02] border-white/5 text-cream/70 hover:bg-white/5 hover:border-white/20"
+                                  }`}
                               >
-                                <span className={`w-5 h-5 rounded-full border flex items-center justify-center text-[9px] font-bold ${
-                                  isSelected ? "border-neon bg-neon text-[#010828]" : "border-white/20 text-cream/40"
-                                }`}>
+                                <span className={`w-5 h-5 rounded-full border flex items-center justify-center text-[9px] font-bold ${isSelected ? "border-neon bg-neon text-[#010828]" : "border-white/20 text-cream/40"
+                                  }`}>
                                   {String.fromCharCode(65 + optIdx)}
                                 </span>
                                 {opt}
@@ -708,11 +740,10 @@ export default function MyLearning() {
                 </div>
               ) : (
                 <div className="text-center space-y-6 py-4 font-mono">
-                  <div className={`mx-auto w-16 h-16 rounded-full flex items-center justify-center border ${
-                    quizResult.passed
-                      ? "bg-neon/10 border-neon text-neon"
-                      : "bg-red-500/10 border-red-500/30 text-red-400"
-                  }`}>
+                  <div className={`mx-auto w-16 h-16 rounded-full flex items-center justify-center border ${quizResult.passed
+                    ? "bg-neon/10 border-neon text-neon"
+                    : "bg-red-500/10 border-red-500/30 text-red-400"
+                    }`}>
                     <AlertCircle className="h-7 w-7" />
                   </div>
                   <div className="space-y-2">

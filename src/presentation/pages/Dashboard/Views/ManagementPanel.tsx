@@ -102,7 +102,11 @@ export default function ManagementPanel() {
     setCourseLevel("beginner");
     setCourseCategory(categories[0]?.id.toString() || "");
     setCourseSubcategory(subcategories[0]?.id.toString() || "");
-    setCourseTeacher(users[0]?.id.toString() || "");
+
+    // Asignar al primer usuario que sea admin o profesor para coincidir con los filtros de select
+    const defaultTeacher = users.find(u => getUserRole(u) === 'teacher' || getUserRole(u) === 'admin');
+    setCourseTeacher(defaultTeacher?.id.toString() || "");
+
     setCourseTags([]);
     setCourseImageFile(null);
     setCourseError("");
