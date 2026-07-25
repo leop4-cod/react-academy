@@ -73,7 +73,7 @@ export default function ManagementPanel() {
         apiService.categories.list(),
         apiService.subcategories.list(),
         apiService.tags.list(),
-        isAdmin ? apiService.users.list() : Promise.resolve([])
+        apiService.users.list()
       ]);
       setCourses(courseList);
       setLessons(lessonList);
@@ -697,11 +697,13 @@ export default function ManagementPanel() {
                   value={courseTeacher}
                   onChange={(e) => setCourseTeacher(e.target.value)}
                 >
-                  {users.map((u) => (
-                    <option key={u.id} value={u.id}>
-                      {u.first_name} {u.last_name}
-                    </option>
-                  ))}
+                  {users
+                    .filter(u => getUserRole(u) === 'teacher' || getUserRole(u) === 'admin' || u.id.toString() === courseTeacher)
+                    .map((u) => (
+                      <option key={u.id} value={u.id}>
+                        {u.first_name} {u.last_name}
+                      </option>
+                    ))}
                 </select>
               </div>
 
