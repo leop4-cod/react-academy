@@ -1,55 +1,28 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Loader2, Award, Download, Calendar, ShieldCheck, Trash2, ArrowRight, X } from "lucide-react";
+import { Loader2, Trash2, ArrowRight } from "lucide-react";
 import { apiService } from "../../../../infrastructure/http/api-service";
-import type { Certificate, Wishlist, Enrollment } from "../../../../infrastructure/http/api-service";
-import { useAuthStore } from "../../../store/auth.store";
+import type { Wishlist } from "../../../../infrastructure/http/api-service";
 
 export default function AcademicRecords() {
-  const { user } = useAuthStore();
-  const [activeTab, setActiveTab] = useState<"certificates" | "wishlist">("certificates");
-  const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [wishlist, setWishlist] = useState<Wishlist[]>([]);
-  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  // Reclamar
-  const [claimCourseId, setClaimCourseId] = useState<string>("");
-  const [claimLoading, setClaimLoading] = useState(false);
-  const [claimError, setClaimError] = useState("");
-  const [claimSuccess, setClaimSuccess] = useState("");
-
-  const [activeCertRender, setActiveCertRender] = useState<Certificate | null>(null);
 
   const loadRecords = async () => {
     setIsLoading(true);
     try {
-      const [certList, wishList, enrollList, courseList] = await Promise.all([
-        apiService.certificates.list(),
+      const [wishList, courseList] = await Promise.all([
         apiService.wishlist.list(),
-        apiService.enrollments.list(),
         apiService.courses.list()
       ]);
       const courseMap = new Map(courseList.map((c) => [c.id, c]));
-
-      const hydratedEnrollments = enrollList.map((e) => ({
-        ...e,
-        course_details: e.course_details || courseMap.get(e.course)
-      }));
-
-      const hydratedCertificates = certList.map((cert) => ({
-        ...cert,
-        course_title: cert.course_title || courseMap.get(cert.course)?.title || `CURSO #${cert.course}`
-      }));
 
       const hydratedWishlist = wishList.map((w) => ({
         ...w,
         course_details: w.course_details || courseMap.get(w.course)
       }));
 
-      setCertificates(hydratedCertificates);
       setWishlist(hydratedWishlist);
-      setEnrollments(hydratedEnrollments);
     } catch (err) {
       console.error("Fallo al cargar registros académicos:", err);
     } finally {
@@ -61,28 +34,6 @@ export default function AcademicRecords() {
     loadRecords();
   }, []);
 
-  const handleClaimCertificate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!claimCourseId) return;
-    setClaimLoading(true);
-    setClaimError("");
-    setClaimSuccess("");
-    try {
-      await apiService.certificates.create(parseInt(claimCourseId));
-      await loadRecords();
-      setClaimSuccess("¡Señal de graduación confirmada! Certificado registrado exitosamente.");
-      setClaimCourseId("");
-    } catch (err: any) {
-      console.error("Fallo al reclamar certificado:", err);
-      setClaimError(
-        err.response?.data?.detail ||
-        "No se pudo registrar el diploma. Es posible que ya exista registrado."
-      );
-    } finally {
-      setClaimLoading(false);
-    }
-  };
-
   const handleRemoveWishlist = async (id: number) => {
     try {
       await apiService.wishlist.destroy(id);
@@ -90,10 +41,6 @@ export default function AcademicRecords() {
     } catch (err) {
       console.error("Fallo al eliminar de wishlist:", err);
     }
-  };
-
-  const handlePrintCertificate = (cert: Certificate) => {
-    setActiveCertRender(cert);
   };
 
   if (isLoading) {
