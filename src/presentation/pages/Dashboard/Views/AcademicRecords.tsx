@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Loader2, Award, Download, Calendar, ShieldCheck, Trash2, ArrowRight } from "lucide-react";
+import { Loader2, Award, Download, Calendar, ShieldCheck, Trash2, ArrowRight, X } from "lucide-react";
 import { apiService } from "../../../../infrastructure/http/api-service";
 import type { Certificate, Wishlist, Enrollment } from "../../../../infrastructure/http/api-service";
 import { useAuthStore } from "../../../store/auth.store";
@@ -12,12 +12,14 @@ export default function AcademicRecords() {
   const [wishlist, setWishlist] = useState<Wishlist[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   // Reclamar
   const [claimCourseId, setClaimCourseId] = useState<string>("");
   const [claimLoading, setClaimLoading] = useState(false);
   const [claimError, setClaimError] = useState("");
   const [claimSuccess, setClaimSuccess] = useState("");
+
+  const [activeCertRender, setActiveCertRender] = useState<Certificate | null>(null);
 
   const loadRecords = async () => {
     setIsLoading(true);
@@ -73,7 +75,7 @@ export default function AcademicRecords() {
     } catch (err: any) {
       console.error("Fallo al reclamar certificado:", err);
       setClaimError(
-        err.response?.data?.detail || 
+        err.response?.data?.detail ||
         "No se pudo registrar el diploma. Es posible que ya exista registrado."
       );
     } finally {
@@ -91,63 +93,7 @@ export default function AcademicRecords() {
   };
 
   const handlePrintCertificate = (cert: Certificate) => {
-    const printWindow = window.open("", "_blank");
-    if (!printWindow) return;
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>DIPLOMA DE GRADUACIÓN: ${cert.course_title || "CURSO"}</title>
-          <style>
-            body {
-              background-color: #010828;
-              color: #EFF4FF;
-              font-family: monospace;
-              padding: 60px;
-              text-align: center;
-              border: 10px double #6FFF00;
-            }
-            .title {
-              font-size: 36px;
-              letter-spacing: 4px;
-              color: #6FFF00;
-              margin-bottom: 20px;
-            }
-            .subtitle {
-              font-size: 16px;
-              color: #EFF4FF;
-              margin-bottom: 50px;
-            }
-            .content {
-              font-size: 20px;
-              line-height: 1.8;
-              margin-bottom: 50px;
-            }
-            .footer {
-              margin-top: 100px;
-              font-size: 12px;
-              color: rgba(239, 244, 255, 0.5);
-            }
-          </style>
-        </head>
-        <body>
-          <div class="title">CODEACADEMY</div>
-          <div class="subtitle">CERTIFICACIÓN ACADÉMICA DE COMPETENCIA</div>
-          <div class="content">
-            ESTE DOCUMENTO CERTIFICA QUE EL EXPLORADOR:<br/>
-            <strong>${user?.first_name || "ESTUDIANTE"} ${user?.last_name || "CODEACADEMY"}</strong><br/><br/>
-            HA COMPLETADO EXITOSAMENTE TODOS LOS PROTOCOLOS DE AULA PARA EL CURSO:<br/>
-            <strong>${cert.course_title || `CURSO #${cert.course}`}</strong><br/><br/>
-            EMITIDO EL DÍA: ${new Date(cert.issued_at).toLocaleDateString()}<br/>
-            CÓDIGO DE SEÑAL SEGURO: CERT-${cert.id}-${cert.certificate_code}
-          </div>
-          <div class="footer">
-            SISTEMA OPERATIVO COMPILADO AUTOMÁTICAMENTE &copy; CODEACADEMY.
-          </div>
-          <script>window.print();</script>
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
+    setActiveCertRender(cert);
   };
 
   if (isLoading) {
@@ -174,21 +120,19 @@ export default function AcademicRecords() {
       <div className="flex gap-2 border-b border-white/5 pb-2">
         <button
           onClick={() => setActiveTab("certificates")}
-          className={`px-5 py-2.5 rounded-xl text-xs uppercase font-grotesk tracking-wider border transition-all cursor-pointer ${
-            activeTab === "certificates"
+          className={`px-5 py-2.5 rounded-xl text-xs uppercase font-grotesk tracking-wider border transition-all cursor-pointer ${activeTab === "certificates"
               ? "bg-neon text-[#010828] border-neon font-bold"
               : "bg-white/[0.02] border-white/5 text-cream/70 hover:border-white/20"
-          }`}
+            }`}
         >
           Diplomas Emitidos
         </button>
         <button
           onClick={() => setActiveTab("wishlist")}
-          className={`px-5 py-2.5 rounded-xl text-xs uppercase font-grotesk tracking-wider border transition-all cursor-pointer ${
-            activeTab === "wishlist"
+          className={`px-5 py-2.5 rounded-xl text-xs uppercase font-grotesk tracking-wider border transition-all cursor-pointer ${activeTab === "wishlist"
               ? "bg-neon text-[#010828] border-neon font-bold"
               : "bg-white/[0.02] border-white/5 text-cream/70 hover:border-white/20"
-          }`}
+            }`}
         >
           Lista de Deseos
         </button>
@@ -335,8 +279,8 @@ export default function AcademicRecords() {
 
                   <div className="pt-4 border-t border-white/5 mt-4 flex items-center justify-between">
                     <span className="text-xs font-grotesk text-neon">
-                      {item.course_details?.price && parseFloat(item.course_details.price) > 0 
-                        ? `$${item.course_details.price}` 
+                      {item.course_details?.price && parseFloat(item.course_details.price) > 0
+                        ? `$${item.course_details.price}`
                         : "GRATIS"}
                     </span>
 
@@ -355,6 +299,88 @@ export default function AcademicRecords() {
               No has añadido cursos a tu radar.
             </div>
           )}
+        </div>
+      )}
+
+      {/* Modal de Certificado Visual ("Fake") */}
+      {activeCertRender && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="relative w-full max-w-[800px] aspect-[1.414/1] bg-white text-black p-8 md:p-12 shadow-2xl flex flex-col justify-center items-center text-center overflow-hidden">
+            {/* Decoraciones del certificado */}
+            <div className="absolute top-0 left-0 w-full h-full border-[12px] border-[#02092c] pointer-events-none z-10" />
+            <div className="absolute top-2 left-2 w-[calc(100%-16px)] h-[calc(100%-16px)] border-[2px] border-[#39ff14]/50 pointer-events-none z-10" />
+            <div className="absolute top-0 left-0 w-32 h-32 bg-[#02092c] transform -rotate-45 -translate-x-16 -translate-y-16" />
+            <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#02092c] transform -rotate-45 translate-x-16 translate-y-16" />
+
+            <div className="relative z-20 space-y-6 w-full px-12">
+              <div className="flex justify-center mb-6">
+                <Award className="h-16 w-16 text-[#02092c]" />
+              </div>
+
+              <h1 className="text-4xl md:text-5xl font-serif text-[#02092c] uppercase tracking-widest font-black">
+                Certificado de Finalización
+              </h1>
+
+              <p className="text-sm uppercase tracking-widest text-gray-500 font-mono mt-4">
+                CERTIFICA OFICIALMENTE QUE
+              </p>
+
+              <h2 className="text-4xl md:text-5xl font-grotesk text-[#39ff14] bg-[#02092c] py-2 px-8 inline-block uppercase tracking-widest shadow-lg mt-2">
+                {user?.first_name ? `${user.first_name} ${user.last_name || ''}` : 'Estudiante Ejemplar'}
+              </h2>
+
+              <p className="text-sm uppercase tracking-wider text-gray-700 font-mono mt-6 leading-relaxed">
+                Ha completado satisfactoriamente todos los requisitos y evaluaciones del curso:
+              </p>
+
+              <h3 className="text-2xl font-bold uppercase text-[#02092c] mt-2 border-b-2 border-[#39ff14]/50 inline-block pb-1">
+                {activeCertRender.course_title || `Curso #${activeCertRender.course}`}
+              </h3>
+
+              <div className="flex justify-between items-end w-full pt-16 font-mono text-xs font-bold uppercase tracking-widest text-[#02092c]">
+                <div className="text-center">
+                  <div className="w-32 border-b-2 border-[#02092c] mb-2 mx-auto"></div>
+                  Director Académico
+                </div>
+                <div className="text-center">
+                  <div className="w-32 border-b-2 border-[#02092c] mb-2 mx-auto">
+                    {new Date(activeCertRender.issued_at).toLocaleDateString()}
+                  </div>
+                  Fecha de Emisión
+                </div>
+              </div>
+            </div>
+
+            {/* Código serial del certificado */}
+            <div className="absolute bottom-4 right-4 text-[8px] font-mono text-gray-400 z-50">
+              SERIAL: CERT-{activeCertRender.id}-{activeCertRender.certificate_code}
+            </div>
+
+            {/* Botones Flotantes (No se imprimen) */}
+            <div className="absolute -bottom-16 left-0 w-full flex justify-center gap-4 group-hover:bottom-4 transition-all z-50">
+              <button
+                onClick={() => window.print()}
+                className="px-6 py-2 bg-[#02092c] text-[#39ff14] text-xs font-bold font-grotesk uppercase tracking-widest hover:scale-105 transition-all shadow-xl flex items-center gap-2"
+              >
+                <Download className="h-4 w-4" /> Guardar PDF
+              </button>
+              <button
+                onClick={() => setActiveCertRender(null)}
+                className="px-6 py-2 bg-red-600 text-white text-xs font-bold font-grotesk uppercase tracking-widest hover:scale-105 transition-all shadow-xl flex items-center gap-2"
+              >
+                <X className="h-4 w-4" /> Cerrar
+              </button>
+            </div>
+
+            <div className="absolute top-4 right-4 z-50">
+              <button
+                onClick={() => setActiveCertRender(null)}
+                className="w-10 h-10 bg-black/10 hover:bg-black/20 rounded-full flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X className="h-5 w-5 text-black" />
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
