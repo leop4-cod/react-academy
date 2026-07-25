@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Mail, Twitter, Github, ChevronRight, Loader2, BookOpen, User as UserIcon } from "lucide-react";
+import { Mail, Github, ChevronRight, Loader2, BookOpen, User as UserIcon } from "lucide-react";
 import { apiService } from "../../../infrastructure/http/api-service";
 import type { Course, User } from "../../../infrastructure/http/api-service";
 import { useAuthStore } from "../../store/auth.store";
@@ -107,7 +107,7 @@ export default function Home() {
               </li>
               <li>
                 <a href="#cta" className="font-grotesk text-[13px] tracking-widest text-cream uppercase hover:text-neon transition-all">
-                  Señales
+                  Contacto
                 </a>
               </li>
             </ul>
@@ -127,38 +127,28 @@ export default function Home() {
         {/* Contenido del Hero */}
         <div className="relative z-10 w-full max-w-[1831px] mx-auto px-4 md:px-8 lg:px-12 flex-grow flex items-center">
           <div className="relative max-w-[820px] lg:ml-32 select-none">
-            {/* Título en Anton */}
+            {/* Título Principal */}
             <h1 className="font-grotesk text-4xl sm:text-6xl md:text-[75px] lg:text-[90px] leading-[1.05] md:leading-[1] uppercase tracking-wider text-cream">
-              MÁS ALLÁ DEL<br />
-              CÓDIGO Y ( SUS )<br />
-              LÍMITES COMUNES
+              DOMINA EL CÓDIGO<br />
+              Y CONSTRUYE TU<br />
+              FUTURO
             </h1>
-
-            {/* Texto en manuscrito verde neón */}
-            <span className="font-condiment text-neon text-[28px] sm:text-[36px] md:text-[48px] absolute -right-2 md:right-10 top-1/2 -translate-y-1/2 -rotate-2 mix-blend-difference opacity-90 pointer-events-none select-none">
-              Colección de cursos
-            </span>
+            <p className="mt-6 font-mono text-xs sm:text-sm tracking-widest text-cream/70 uppercase max-w-lg leading-relaxed">
+              Aprende desarrollo web y programación desde cero con proyectos reales y cursos interactivos.
+            </p>
           </div>
         </div>
 
         {/* Stack de redes sociales en Escritorio */}
         <div className="hidden lg:flex absolute right-12 top-1/3 flex-col gap-4 z-20">
           <a
-            href="mailto:support@codeacademy.edu"
+            href="mailto:codeacademy.noreply1@gmail.com"
             className="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
           >
             <Mail className="h-5 w-5 text-cream" />
           </a>
           <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noreferrer"
-            className="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
-          >
-            <Twitter className="h-5 w-5 text-cream" />
-          </a>
-          <a
-            href="https://github.com"
+            href="https://github.com/leop4-cod/react-academy"
             target="_blank"
             rel="noreferrer"
             className="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
@@ -170,21 +160,13 @@ export default function Home() {
         {/* Stack de redes sociales en Móvil */}
         <div className="flex lg:hidden justify-center gap-6 pb-12 relative z-20">
           <a
-            href="mailto:support@codeacademy.edu"
+            href="mailto:codeacademy.noreply1@gmail.com"
             className="w-[48px] h-[48px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
           >
             <Mail className="h-4 w-4 text-cream" />
           </a>
           <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noreferrer"
-            className="w-[48px] h-[48px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
-          >
-            <Twitter className="h-4 w-4 text-cream" />
-          </a>
-          <a
-            href="https://github.com"
+            href="https://github.com/leop4-cod/react-academy"
             target="_blank"
             rel="noreferrer"
             className="w-[48px] h-[48px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-colors"
@@ -211,19 +193,19 @@ export default function Home() {
         <div className="relative z-10 w-full max-w-[1831px] mx-auto px-4 md:px-8 lg:px-12">
           {/* Fila superior: Título a la izquierda, Descripción a la derecha */}
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-16 lg:mb-32">
-            <div className="relative select-none">
+            <div className="select-none">
               <h2 className="font-grotesk text-[38px] sm:text-[50px] lg:text-[60px] leading-[1] uppercase tracking-wider text-cream">
-                HOLA!<br />
-                SOY CODEACADEMY
+                BIENVENIDO A<br />
+                CODEACADEMY
               </h2>
-              <span className="font-condiment text-neon text-[32px] sm:text-[44px] lg:text-[56px] absolute -bottom-10 right-4 -rotate-6 mix-blend-difference opacity-90 select-none">
-                Academia
-              </span>
+              <p className="text-xs font-mono text-neon uppercase tracking-widest mt-2">
+                Academia de Desarrollo Web & Programación
+              </p>
             </div>
 
             <div className="max-w-[266px]">
               <p className="font-mono text-xs sm:text-sm uppercase tracking-wider leading-relaxed text-cream select-none">
-                UN CAMPUS DIGITAL FIJADO MÁS ALLÁ DEL TIEMPO Y DEL ESPACIO. UNA EXPLORACIÓN DE LA LÓGICA, EL DISEÑO Y LA CREATIVIDAD.
+                UN CAMPUS DIGITAL DISEÑADO PARA POTENCIAR TU APRENDIZAJE EN LÓGICA, DESARROLLO Y DISEÑO.
               </p>
             </div>
           </div>
@@ -233,20 +215,20 @@ export default function Home() {
             {/* Columna izquierda */}
             <div className="flex flex-col gap-6 max-w-sm">
               <p className="font-mono text-xs uppercase tracking-wider text-cream/70 leading-relaxed">
-                ENSEÑAMOS DIVERSAS TECNOLOGÍAS DIGITALES. SI ERES TANTO PROFESOR COMO ESTUDIANTE, NUESTRO NODO ESTÁ DISEÑADO PARA EXPANDIR TU CONOCIMIENTO.
+                ENSEÑAMOS TECNOLOGÍAS DIGITALES MODERNAS. YA SEAS PROFESOR O ESTUDIANTE, NUESTRA PLATAFORMA ESTÁ DISEÑADA PARA EXPANDIR TUS HABILIDADES.
               </p>
               <p className="font-mono text-xs uppercase tracking-wider text-cream/70 leading-relaxed">
-                POTENCIA TU PERFIL YA SEA COMO PROFESOR FREELANCER O ESTUDIANTE DE CÓDIGO NÚCLEO, DISEÑANDO Y COMPLETANDO CURSOS CONECTADOS DIRECTAMENTE A NUESTRA API.
+                POTENCIA TU PERFIL CREANDO Y COMPLETANDO CURSOS CONECTADOS EN TIEMPO REAL.
               </p>
             </div>
 
             {/* Columna derecha */}
             <div className="hidden lg:flex flex-col gap-6 max-w-sm">
               <p className="font-mono text-xs uppercase tracking-wider text-cream/70 leading-relaxed">
-                RUTAS TEMÁTICAS ACTIVAS: {categoriesCount > 0 ? categoriesCount : 4} CATEGORÍAS ACADÉMICAS DISPONIBLES EN EL APRENDIZAJE.
+                RUTAS DE APRENDIZAJE: {categoriesCount > 0 ? categoriesCount : 4} CATEGORÍAS ACADÉMICAS DISPONIBLES.
               </p>
               <p className="font-mono text-xs uppercase tracking-wider text-cream/70 leading-relaxed">
-                DIPLOMAS Y CERTIFICACIONES EMITIDAS DENTRO DEL PROTOCOLO CRÍTICO DE EVALUACIÓN DE CODEACADEMY.
+                CERTIFICADOS DE FINALIZACIÓN EMITIDOS AL COMPLETAR CADA CURSO EN CODEACADEMY.
               </p>
             </div>
           </div>
@@ -260,11 +242,8 @@ export default function Home() {
           <div className="flex justify-between items-end gap-6 mb-16">
             <div>
               <h2 className="font-grotesk text-3xl sm:text-5xl lg:text-[60px] leading-[1.05] uppercase tracking-wider text-cream">
-                COLECCIÓN DE<br />
-                <span className="ml-12 md:ml-24 lg:ml-32 font-condiment text-neon lowercase tracking-normal mr-4">
-                  cursos
-                </span>
-                ESPACIALES
+                EXPLORA NUESTROS<br />
+                <span className="text-neon">CURSOS</span> DESTACADOS
               </h2>
             </div>
 
@@ -417,18 +396,13 @@ export default function Home() {
 
         {/* Contenido alineado a la derecha */}
         <div className="absolute inset-0 z-20 flex items-center justify-end px-4 md:px-8 lg:px-12 lg:pr-[20%] lg:pl-[15%] select-none">
-          <div className="relative text-right max-w-xl">
-            {/* Texto decorativo */}
-            <span className="font-condiment text-neon text-2xl sm:text-[42px] lg:text-[68px] absolute -top-12 sm:-top-20 left-0 -rotate-3 mix-blend-difference opacity-95">
-              Ve más allá
-            </span>
-
+          <div className="text-right max-w-xl">
             {/* Título */}
             <h2 className="font-grotesk text-lg sm:text-4xl lg:text-[60px] leading-[1.05] uppercase tracking-wider text-cream">
               <span className="block mb-4 sm:mb-8 text-neon">ÚNETE A NOSOTROS.</span>
-              REVELA LO OCULTO.<br />
-              DEFINE EL MAÑANA.<br />
-              SIGUE LA SEÑAL.
+              APRENDE A TU RITMO.<br />
+              DESARROLLA TU FUTURO.<br />
+              IMPULSA TU CARRERA.
             </h2>
           </div>
         </div>
@@ -437,21 +411,13 @@ export default function Home() {
         <div className="absolute left-[8%] bottom-[8%] sm:bottom-[12%] lg:bottom-[15%] z-20 flex flex-col">
           <div className="liquid-glass rounded-[0.5rem] sm:rounded-[1.25rem] border border-white/5 flex flex-col overflow-hidden">
             <a
-              href="mailto:support@codeacademy.edu"
+              href="mailto:codeacademy.noreply1@gmail.com"
               className="w-[12vw] sm:w-[14.375rem] md:w-[10.78125rem] lg:w-[16.77rem] h-[12vw] sm:h-[4.5rem] flex items-center justify-center border-b border-white/10 hover:bg-white/10 transition-all text-cream hover:text-neon"
             >
               <Mail className="h-[4vw] sm:h-5 w-[4vw] sm:w-5" />
             </a>
             <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noreferrer"
-              className="w-[12vw] sm:w-[14.375rem] md:w-[10.78125rem] lg:w-[16.77rem] h-[12vw] sm:h-[4.5rem] flex items-center justify-center border-b border-white/10 hover:bg-white/10 transition-all text-cream hover:text-neon"
-            >
-              <Twitter className="h-[4vw] sm:h-5 w-[4vw] sm:w-5" />
-            </a>
-            <a
-              href="https://github.com"
+              href="https://github.com/leop4-cod/react-academy"
               target="_blank"
               rel="noreferrer"
               className="w-[12vw] sm:w-[14.375rem] md:w-[10.78125rem] lg:w-[16.77rem] h-[12vw] sm:h-[4.5rem] flex items-center justify-center hover:bg-white/10 transition-all text-cream hover:text-neon"
@@ -470,6 +436,11 @@ export default function Home() {
             <span className="font-grotesk text-sm text-cream tracking-widest">CODEACADEMY</span>
           </div>
           &copy; {new Date().getFullYear()} CODEACADEMY. TODOS LOS DERECHOS RESERVADOS.
+          <div className="mt-3">
+            <Link to="/404" className="text-[9px] text-cream/40 hover:text-neon transition-colors tracking-widest lowercase underline">
+              Página 404
+            </Link>
+          </div>
         </div>
       </footer>
     </div>

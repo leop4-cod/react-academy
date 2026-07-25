@@ -23,7 +23,7 @@ export default function RecoverPassword() {
         err.response?.data?.email?.[0] || 
         err.response?.data?.detail || 
         err.response?.data?.non_field_errors?.[0] ||
-        "Ocurrió un error. Por favor, verifica tus coordenadas de correo."
+        "Ocurrió un error. Por favor, verifica tu correo electrónico."
       );
     } finally {
       setIsLoading(false);
@@ -62,15 +62,12 @@ export default function RecoverPassword() {
         {/* Form Container */}
         <div className="liquid-glass rounded-[32px] p-8 md:p-10 border border-white/5 shadow-2xl backdrop-blur-xl">
           {/* Header */}
-          <div className="text-center mb-8 relative">
-            <span className="font-condiment text-neon text-3xl absolute -top-5 right-2 -rotate-6 select-none">
-              Recuperar
-            </span>
+          <div className="text-center mb-8">
             <h1 className="font-grotesk text-4xl uppercase tracking-wider text-cream">
-              RESETEAR ACCESO
+              RECUPERAR CONTRASEÑA
             </h1>
-            <p className="text-[10px] text-cream/50 uppercase mt-2 tracking-widest">
-              Transmite coordenadas para reestablecer la llave
+            <p className="text-xs text-neon uppercase mt-2 tracking-widest font-mono">
+              Ingresa tu correo para restablecer tu cuenta
             </p>
           </div>
 
@@ -86,7 +83,7 @@ export default function RecoverPassword() {
                 {/* Email Field */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-cream/70 mb-2">
-                    Coordenadas de Correo Registrado
+                    Correo Electrónico Registrado
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-cream/40">
@@ -95,7 +92,7 @@ export default function RecoverPassword() {
                     <input
                       type="email"
                       required
-                      placeholder="coordenadas@codeacademy.edu"
+                      placeholder="usuario@codeacademy.edu"
                       className="w-full pl-11 pr-4 py-3 bg-white/[0.03] border border-white/10 rounded-[14px] text-cream placeholder-white/20 text-sm focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-all"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}

@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useParams } from "react-router-dom";
 import { Loader2, ArrowLeft, Lock, CheckCircle2, AlertTriangle, Eye, EyeOff } from "lucide-react";
 import { axiosPublic } from "../../../infrastructure/http/axios-client";
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
-  const uid = searchParams.get("uid") || searchParams.get("uidb64") || "";
-  const token = searchParams.get("token") || "";
+  const routeParams = useParams<{ uid?: string; token?: string; uidb64?: string }>();
+  const uid = searchParams.get("uid") || searchParams.get("uidb64") || routeParams.uid || routeParams.uidb64 || "";
+  const token = searchParams.get("token") || routeParams.token || "";
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -22,7 +23,7 @@ export default function ResetPassword() {
     setError("");
 
     if (!uid || !token) {
-      setError("Paramétros de verificación faltantes (uid o token). Solicita un nuevo enlace.");
+      setError("Parámetros de verificación faltantes (uid o token). Solicita un nuevo enlace.");
       return;
     }
 
@@ -44,17 +45,35 @@ export default function ResetPassword() {
         uidb64: uid,
         token: token,
         new_password: newPassword,
+        password: newPassword,
+        new_password1: newPassword,
       });
       setIsSuccess(true);
     } catch (err: any) {
       console.error("Reset password confirm error details:", err);
-      const serverMsg =
-        err.response?.data?.non_field_errors?.[0] ||
-        err.response?.data?.detail ||
-        err.response?.data?.token?.[0] ||
-        err.response?.data?.new_password?.[0] ||
-        err.response?.data?.uidb64?.[0] ||
-        "El enlace de recuperación es inválido o ha expirado. Solicita un nuevo enlace.";
+      const data = err.response?.data;
+      let serverMsg = "El enlace de recuperación es inválido o ha expirado. Solicita un nuevo enlace.";
+      if (data) {
+        if (typeof data === "string") {
+          serverMsg = data;
+        } else if (Array.isArray(data.non_field_errors)) {
+          serverMsg = data.non_field_errors[0];
+        } else if (typeof data.detail === "string") {
+          serverMsg = data.detail;
+        } else if (Array.isArray(data.token)) {
+          serverMsg = `Token: ${data.token[0]}`;
+        } else if (Array.isArray(data.new_password)) {
+          serverMsg = `Contraseña: ${data.new_password[0]}`;
+        } else if (Array.isArray(data.password)) {
+          serverMsg = `Contraseña: ${data.password[0]}`;
+        } else if (Array.isArray(data.new_password1)) {
+          serverMsg = `Contraseña: ${data.new_password1[0]}`;
+        } else if (Array.isArray(data.uid)) {
+          serverMsg = `UID: ${data.uid[0]}`;
+        } else if (Array.isArray(data.uidb64)) {
+          serverMsg = `UID: ${data.uidb64[0]}`;
+        }
+      }
       setError(serverMsg);
     } finally {
       setIsLoading(false);
