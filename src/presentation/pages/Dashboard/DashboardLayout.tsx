@@ -15,10 +15,12 @@ import AcademicRecords from "./Views/AcademicRecords";
 import ProfileSettings from "./Views/ProfileSettings";
 import ManagementPanel from "./Views/ManagementPanel";
 
-// Protección de rutas solo para admins
-function AdminRoute({ children }: { children: React.ReactNode }) {
-  const isAdmin = useAuthStore((s) => s.isAdmin);
-  if (!isAdmin) {
+// Protección de rutas para admins y profesores
+function ManagementRoute({ children }: { children: React.ReactNode }) {
+  const { user, isAdmin } = useAuthStore();
+  const isTeacher = user?.role === 'teacher' || user?.is_teacher || isAdmin;
+  
+  if (!isTeacher) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center gap-6 p-8">
         <ShieldAlert className="h-16 w-16 text-red-400/60" />
@@ -69,8 +71,9 @@ export default function DashboardLayout() {
     { path: "/dashboard/profile", label: "Configuración", icon: Settings },
   ];
 
-  // "Consola CRUD" solo visible para administradores
-  const adminNavLinks: NavLinkItem[] = isAdmin
+  // "Consola CRUD" visible para administradores y profesores
+  const isTeacher = user?.role === 'teacher' || user?.is_teacher || isAdmin;
+  const adminNavLinks: NavLinkItem[] = isTeacher
     ? [{ path: "/dashboard/management", label: "Consola Admin", icon: Database, adminOnly: true }]
     : [];
 
@@ -211,13 +214,12 @@ export default function DashboardLayout() {
             <Route path="/forums" element={<Forums />} />
             <Route path="/records" element={<AcademicRecords />} />
             <Route path="/profile" element={<ProfileSettings />} />
-            {/* Ruta protegida - solo admin */}
             <Route
               path="/management"
               element={
-                <AdminRoute>
+                <ManagementRoute>
                   <ManagementPanel />
-                </AdminRoute>
+                </ManagementRoute>
               }
             />
             {/* Catch-all dentro del dashboard */}

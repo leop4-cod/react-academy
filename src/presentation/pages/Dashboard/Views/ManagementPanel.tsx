@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Loader2, Plus, Edit2, Trash2, BookOpen, Layers, Tag as TagIcon, Users, CheckSquare, Upload, Play, User as UserIcon } from "lucide-react";
+import { useAuthStore } from "../../../store/auth.store";
 import { apiService } from "../../../../infrastructure/http/api-service";
 import type { Course, Lesson, Category, Subcategory, Tag, Quiz, User } from "../../../../infrastructure/http/api-service";
 
@@ -15,6 +16,8 @@ export default function ManagementPanel() {
   const [tags, setTags] = useState<Tag[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const { isAdmin } = useAuthStore();
 
   const getUserRole = (u: User) => {
     if (u.email === 'admin@codeacademy.com') return 'admin';
@@ -70,7 +73,7 @@ export default function ManagementPanel() {
         apiService.categories.list(),
         apiService.subcategories.list(),
         apiService.tags.list(),
-        apiService.users.list()
+        isAdmin ? apiService.users.list() : Promise.resolve([])
       ]);
       setCourses(courseList);
       setLessons(lessonList);
@@ -256,20 +259,17 @@ export default function ManagementPanel() {
       if (simpleModalType === "category") {
         await apiService.categories.create({
           name: simpleName,
-          description: simpleDesc,
-          slug: simpleName.toLowerCase().replace(/\s+/g, "-")
+          description: simpleDesc
         });
       } else if (simpleModalType === "subcategory") {
         await apiService.subcategories.create({
           name: simpleName,
           description: simpleDesc,
-          category: parseInt(simpleParentId),
-          slug: simpleName.toLowerCase().replace(/\s+/g, "-")
+          category: parseInt(simpleParentId)
         });
       } else if (simpleModalType === "tag") {
         await apiService.tags.create({
-          name: simpleName,
-          slug: simpleName.toLowerCase().replace(/\s+/g, "-")
+          name: simpleName
         });
       } else if (simpleModalType === "quiz") {
         await apiService.quizzes.create({
@@ -331,9 +331,12 @@ export default function ManagementPanel() {
     { id: "quizzes", label: "Evaluaciones", icon: CheckSquare, count: quizzes.length },
     { id: "categories", label: "Categorías", icon: Layers, count: categories.length },
     { id: "subcategories", label: "Subcategorías", icon: Layers, count: subcategories.length },
-    { id: "tags", label: "Etiquetas", icon: TagIcon, count: tags.length },
-    { id: "users", label: "Usuarios", icon: Users, count: users.length }
+    { id: "tags", label: "Etiquetas", icon: TagIcon, count: tags.length }
   ];
+
+  if (isAdmin) {
+    tabs.push({ id: "users", label: "Usuarios", icon: Users, count: users.length });
+  }
 
   return (
     <div className="space-y-6 fade-in font-mono text-cream">
@@ -386,11 +389,10 @@ export default function ManagementPanel() {
             <button
               key={t.id}
               onClick={() => setActiveTab(t.id as ActiveTab)}
-              className={`px-4 py-2 rounded-xl text-[10px] uppercase font-grotesk tracking-widest border transition-all cursor-pointer whitespace-nowrap flex items-center gap-2 ${
-                active
-                  ? "bg-neon text-[#010828] border-neon font-bold"
-                  : "bg-white/[0.02] border-white/5 text-cream/70 hover:border-white/20"
-              }`}
+              className={`px-4 py-2 rounded-xl text-[10px] uppercase font-grotesk tracking-widest border transition-all cursor-pointer whitespace-nowrap flex items-center gap-2 ${active
+                ? "bg-neon text-[#010828] border-neon font-bold"
+                : "bg-white/[0.02] border-white/5 text-cream/70 hover:border-white/20"
+                }`}
             >
               <Icon className="h-3.5 w-3.5" />
               {t.label} ({t.count})
