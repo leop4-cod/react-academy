@@ -115,7 +115,7 @@ export default function Login() {
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-[11px] uppercase tracking-wider text-cream/70">
-                  Llave de Acceso
+                  Contraseña
                 </label>
                 <Link
                   to="/recover-password"

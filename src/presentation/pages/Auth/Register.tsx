@@ -141,7 +141,7 @@ export default function Register() {
             {/* Password */}
             <div>
               <label className="block text-[11px] uppercase tracking-wider text-cream/70 mb-2">
-                Llave Secreta de Acceso
+                Contraseña
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-cream/40">
@@ -161,7 +161,7 @@ export default function Register() {
             {/* Confirm Password */}
             <div>
               <label className="block text-[11px] uppercase tracking-wider text-cream/70 mb-2">
-                Verificar Llave Secreta
+                Confirmar Contraseña
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-cream/40">

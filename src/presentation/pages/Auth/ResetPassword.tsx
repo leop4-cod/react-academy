@@ -116,7 +116,7 @@ export default function ResetPassword() {
           {/* Header */}
           <div className="text-center mb-8 relative">
             <span className="font-condiment text-neon text-3xl absolute -top-5 right-2 -rotate-6 select-none">
-              Nueva Llave
+              Nueva Contraseña
             </span>
             <h1 className="font-grotesk text-4xl uppercase tracking-wider text-cream">
               RESTABLECER
@@ -150,10 +150,10 @@ export default function ResetPassword() {
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-grotesk uppercase tracking-wider text-cream">
-                LLAVE ACTUALIZADA
+                CONTRASEÑA ACTUALIZADA
               </h3>
               <p className="text-xs text-cream/70 leading-relaxed uppercase">
-                Tu contraseña ha sido restablecida exitosamente. Ya puedes ingresar con tu nueva llave.
+                Tu contraseña ha sido restablecida exitosamente. Ya puedes ingresar con tu nueva contraseña.
               </p>
               <div className="pt-2">
                 <Link
@@ -177,7 +177,7 @@ export default function ResetPassword() {
                 {/* New Password Field */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-cream/70 mb-2">
-                    Nueva Llave de Acceso
+                    Nueva Contraseña
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-cream/40">
@@ -204,7 +204,7 @@ export default function ResetPassword() {
                 {/* Confirm Password Field */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-cream/70 mb-2">
-                    Confirmar Nueva Llave
+                    Confirmar Nueva Contraseña
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-cream/40">
